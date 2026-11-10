@@ -1,5 +1,14 @@
 # SupaBill test report
 
+## 1.2.0rc1 — Wallet import (10 Nov 2026)
+
+| Check | Result |
+|---|---|
+| Backend tests incl. 12 new (`test_wallet_import.py`): template header, review, create/update/skip/rename through Data Import, merge rule, PDF parsing (SupaBill and other layouts), manager-only, uploads readable only by their owner | **64 / 64 pass** |
+| Browser tests incl. 15 new (`tests/ui/wallet_import.cjs`) | **90 / 90 pass** |
+
+Found and fixed while testing: the import row linked to its wallet, which stopped imported wallets from being deleted (now plain text). Note: backend tests leave the test invoice prefix in Settings; run `demo_data.load` before the browser tests.
+
 ## 1.1.0rc1 — EDF section (10 Nov 2026)
 
 | Check | Result |

@@ -42,3 +42,19 @@ export async function call<T = any>(method: string, args: Record<string, unknown
 export function newRequestId(): string {
   return (crypto as any).randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36)
 }
+
+/** Uploads a file as a private Frappe File and returns its URL. */
+export async function uploadFile(file: File): Promise<string> {
+  const fd = new FormData()
+  fd.append('file', file, file.name)
+  fd.append('is_private', '1')
+  fd.append('folder', 'Home')
+  const res = await fetch('/api/method/upload_file', {
+    method: 'POST', body: fd, credentials: 'same-origin',
+    headers: { Accept: 'application/json', 'X-Frappe-CSRF-Token': window.csrf_token || '' },
+  })
+  let body: any = null
+  try { body = await res.json() } catch { /* non-JSON */ }
+  if (!res.ok) throw new ApiError(serverMessage(body) || `Upload failed (${res.status})`, res.status)
+  return body.message.file_url as string
+}

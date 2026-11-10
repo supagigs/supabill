@@ -1,0 +1,135 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "hash",
+ "creation": "2026-11-10 23:00:00.000000",
+ "custom": 0,
+ "description": "Staging rows for importing wallets with Data Import. Each row creates or updates an SB Wallet.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "fields": [
+  {
+   "fieldname": "wallet_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Wallet Name",
+   "reqd": 1
+  },
+  {
+   "default": "Skip",
+   "description": "Update replaces the existing wallet's bank lines; Skip leaves it unchanged",
+   "fieldname": "if_exists",
+   "fieldtype": "Select",
+   "label": "If Wallet Exists",
+   "options": "Skip\nUpdate"
+  },
+  {
+   "fieldname": "is_upwork",
+   "fieldtype": "Check",
+   "label": "Paid via Upwork"
+  },
+  {
+   "fieldname": "settles_to",
+   "fieldtype": "Data",
+   "label": "Settles To"
+  },
+  {
+   "fieldname": "beneficiary_name",
+   "fieldtype": "Data",
+   "label": "Beneficiary Name"
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "fieldname": "routing_swift_code",
+   "fieldtype": "Data",
+   "label": "Routing / SWIFT Code"
+  },
+  {
+   "fieldname": "account_type",
+   "fieldtype": "Data",
+   "label": "Account Type"
+  },
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "label": "Bank Name"
+  },
+  {
+   "fieldname": "bank_address",
+   "fieldtype": "Data",
+   "label": "Bank Address"
+  },
+  {
+   "fieldname": "bank_country",
+   "fieldtype": "Data",
+   "label": "Bank Country"
+  },
+  {
+   "fieldname": "iban",
+   "fieldtype": "Data",
+   "label": "IBAN"
+  },
+  {
+   "fieldname": "ifsc_code",
+   "fieldtype": "Data",
+   "label": "IFSC Code"
+  },
+  {
+   "description": "Extra bank lines, one per line, as Label: value",
+   "fieldname": "other_details",
+   "fieldtype": "Small Text",
+   "label": "Other Details"
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Result",
+   "read_only": 1
+  },
+  {
+   "description": "Name of the wallet created or updated (plain text, so the wallet can still be deleted)",
+   "fieldname": "wallet",
+   "fieldtype": "Data",
+   "label": "Wallet",
+   "read_only": 1
+  }
+ ],
+ "in_create": 1,
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-11-10 23:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "SupaBill",
+ "name": "SB Wallet Import",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "import": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager"
+  },
+  {
+   "create": 1,
+   "import": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill Manager"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -67,6 +67,15 @@ Each client stores the bill-to details and the defaults for its invoices (projec
 
 Each wallet is a collection account. Its bank details print under **Bank transfer details**. A wallet with an empty detail line is marked *details missing* and cannot be used for an invoice until it is filled in. Tick **Paid via Upwork** for wallets that need no bank details.
 
+### Import wallet
+
+**Import wallet** (top right) adds wallets without typing every line.
+
+- **From invoice PDF (one wallet)** — choose an invoice PDF that shows the bank details. SupaBill reads the "Label: value" lines (it looks for a *Bank transfer details* block first) and fills the form. Check each line, type the wallet name and press **Save**. If the name already exists you can **Update** that wallet (lines you filled replace its values, the rest stay) or **Use another name**. Scanned (image-only) PDFs cannot be read.
+- **From CSV (many wallets)** — download the template, fill one row per wallet and upload it as CSV. *Wallet Name* is required; *Paid via Upwork* = Yes for wallets without bank details; extra lines go in *Other Details* as `Label: value`, one per line. A review screen lists every row. For a name that already exists choose **Update existing**, **Skip**, or type a new name; the import stays blocked until every clash is resolved. When updating, blank cells keep the wallet's current values.
+
+The CSV import runs through Frappe's Data Import, so each run is also logged under Data Import in the desk (System Managers).
+
 ## Settings (managers)
 
 - **Company** — header and FROM block.
