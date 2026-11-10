@@ -4,11 +4,11 @@
 
 | Check | Result |
 |---|---|
-| Backend tests including 10 new EDF/realisation tests (`test_edf.py`) | **Pass** |
-| Browser tests incl. 16 new EDF checks (`tests/ui/edf.cjs`) | **75 / 75 pass** on the development bench |
-| Upgrade of the clean-install bench with `scripts/update.sh` (migrate adds the new DocTypes and fields) | see below |
+| Backend tests including 10 new EDF/realisation tests (`test_edf.py`) | **All pass** on both benches |
+| Browser tests incl. 16 new EDF checks (`tests/ui/edf.cjs`) | **75 / 75 pass** on both benches |
+| Upgrade of the clean-install bench with `scripts/update.sh --source` (backup, migrate adds the new DocTypes and fields, build, health check) | **Pass** (609c3d5 → 023257e) |
 
-EDF checks: month list, 2B rows from export invoices only, due banner, edits saved and kept on refresh, net realisable value above the amount refused, PDF and CSV download, mark as filed freezes the form, reopen, realisation close/reopen with IRM, SupaBill User can prepare but not file (UI and API), no page errors. Security: EDF HTML is escaped (test), filing is manager-only on the server.
+EDF checks: month list, 2B rows from export invoices only, due banner, edits saved and kept on refresh, net realisable value above the amount refused, PDF and CSV download, mark as filed freezes the form, reopen, realisation close/reopen with IRM, SupaBill User can prepare but not file (UI and API), no page errors. The register forex check was made data-independent (it compared against a fixed row). Security: EDF HTML is escaped (test), filing is manager-only on the server.
 
 ---
 

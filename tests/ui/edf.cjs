@@ -16,8 +16,20 @@ async function ctx(b, user) {
   p.on('pageerror', (e) => errors.push(e.message));
   // make sure the month starts as a draft
   const month = new Date().toISOString().slice(0, 7);
-  await c.request.post(BASE + '/api/method/supabill.api.edf.reopen', { data: { month }, headers: { 'X-Frappe-CSRF-Token': 'x' } }).catch(() => {});
   await p.goto(BASE + '/supabill/edf');
+  // Own test data: one export invoice this month, and the month back in draft
+  const csrf = await p.evaluate(() => window.csrf_token);
+  const H = { 'X-Frappe-CSRF-Token': csrf };
+  const ex = await c.request.get(BASE + '/api/resource/SB Client/EDF Test Client');
+  if (!ex.ok()) await c.request.post(BASE + '/api/method/supabill.api.setup.save_client', { headers: H, data: { values: {
+    client_name: 'EDF Test Client', address: '1 Test Road\nAustin, TX 78701, United States', country: 'United States', currency: 'USD',
+    payment_terms_days: 15, wallet: 'Briskpe', purpose_code: 'P0802', sac_code: '998313', tax_treatment: 'Export under LUT' } } });
+  const mk = await c.request.post(BASE + '/api/method/supabill.api.invoice.create_invoice', { headers: H, data: { request_id: 'edf-ui-' + Date.now(),
+    payload: { client: 'EDF Test Client', invoice_date: new Date().toISOString().slice(0, 10), currency: 'USD', tax_treatment: 'Export under LUT',
+      milestone: 'EDF UI test', billing_period: 'this month', items: [{ description: 'EDF UI test', qty: 1, rate: 500, sac_code: '998313' }] } } });
+  if (!mk.ok()) throw new Error('could not create test invoice: ' + (await mk.text()).slice(0, 300));
+  await c.request.post(BASE + '/api/method/supabill.api.edf.reopen', { headers: H, data: { month } });
+  await p.reload();
   await p.getByRole('tab').first().waitFor();
   check('EDF page lists invoice months', (await p.getByRole('tab').count()) >= 1);
   await p.getByRole('tab', { name: new RegExp(new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })) }).click();
@@ -72,8 +84,9 @@ async function ctx(b, user) {
   await p.goto(BASE + '/supabill/edf'); await p.getByRole('tab').first().waitFor();
   check('User sees EDF in the sidebar', await p.getByRole('link', { name: 'EDF filing' }).isVisible());
   check('User has no Mark as filed button', (await p.getByRole('button', { name: 'Mark as filed' }).count()) === 0);
-  const r = await c.request.post(BASE + '/api/method/supabill.api.edf.mark_filed', { data: { month } });
-  check('User cannot file through the API', !r.ok(), 'status ' + r.status());
+  const ucsrf = await p.evaluate(() => window.csrf_token);
+  const r = await c.request.post(BASE + '/api/method/supabill.api.edf.mark_filed', { data: { month }, headers: { 'X-Frappe-CSRF-Token': ucsrf } });
+  check('User cannot file through the API', r.status() === 403, 'status ' + r.status());
   await c.close();
   check('No page errors', errors.length === 0, errors.join(' | '));
   await b.close();

@@ -27,8 +27,10 @@ async function login(b, user) {
   await rec.fill('174000'); await rec.press('Tab');
   check('Received sets payment status', await wait(p.getByText('Payment status set to “Received”')));
   await p.waitForTimeout(400);
+  const num = (t) => Number(t.replace(/[^0-9.-]/g, ''));
   const forex = (await row.locator('td').nth(16).innerText()).trim();
-  check('Forex gain calculated', forex.startsWith('-'), forex);
+  const amtInr = num(await row.locator('td').nth(14).innerText());
+  check('Forex gain calculated', Math.abs(num(forex) - (174000 - amtInr)) < 1, `${forex} vs 174000 − ${amtInr}`);
   const ref = row.getByLabel(`Wallet reference for ${inv}`);
   await ref.fill('WREF-1'); await ref.press('Tab'); await p.waitForTimeout(600);
   const api = await (await c.request.get(BASE + '/api/resource/SB Invoice/' + encodeURIComponent(inv))).json();
