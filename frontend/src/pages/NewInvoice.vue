@@ -7,6 +7,9 @@ import { call, newRequestId } from '@/api'
 import { money, inr, fmtDate, today } from '@/format'
 import type { Boot, Client, Item, Preview } from '@/types'
 import { session } from '@/session'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 const boot = ref<Boot | null>(null)
 const loadError = ref('')
@@ -160,7 +163,8 @@ async function loadBoot(pickFirst = true) {
   try {
     boot.value = await call<Boot>('supabill.api.invoice.bootstrap', {}, { get: true })
     loadError.value = ''
-    if (pickFirst && boot.value.clients.length && !f.client) selectClient(boot.value.clients[0].name)
+    const wanted = route.query.client as string | undefined
+    if (pickFirst && boot.value.clients.length && !f.client) selectClient(wanted && boot.value.clients.some((c) => c.name === wanted) ? wanted : boot.value.clients[0].name)
   } catch (e: any) {
     loadError.value = e.message
   }

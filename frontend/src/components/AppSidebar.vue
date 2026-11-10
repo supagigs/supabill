@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { call } from '@/api'
 import { Sidebar, SidebarHeader, SidebarItem, SidebarLabel, SidebarCollapseToggle, useColorScheme } from 'frappe-ui'
 import BrandLogo from './BrandLogo.vue'
 import { NAV } from '@/nav'
@@ -11,6 +12,16 @@ function onCollapse(v: unknown) {
   localStorageSet('sb_sidebar_collapsed', v ? '1' : '0')
 }
 const { resolvedColorScheme, setColorScheme } = useColorScheme()
+const sync = ref<any>(null)
+async function loadSync() {
+  try { sync.value = await call('supabill.api.integrations.sync_status', {}, { get: true }) } catch { sync.value = null }
+}
+onMounted(() => { loadSync(); window.setInterval(loadSync, 60000) })
+const ago = (d?: string) => {
+  if (!d) return 'never'
+  const m = Math.round((Date.now() - new Date(d.replace(' ', 'T')).getTime()) / 60000)
+  return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : Math.round(m / 60) + ' h ago'
+}
 
 const groups = computed(() =>
   NAV.map((g) => ({ ...g, items: g.items.filter((i) => !i.managerOnly || session.isManager) })).filter((g) => g.items.length),
@@ -52,6 +63,16 @@ function localStorageSet(k: string, v: string) {
         />
       </template>
     </div>
-    <div class="mt-auto px-2 pb-2"><SidebarCollapseToggle /></div>
+    <div class="mt-auto px-2 pb-2">
+      <div v-if="sync && !collapsed" class="mb-2 rounded-5 border border-outline-gray-2 bg-surface-base p-3 text-xs" data-testid="sync-card">
+        <div class="flex items-center gap-2 text-p-sm font-medium text-ink-gray-8">
+          <span class="size-2 rounded-full" :class="!sync.enabled ? 'bg-surface-gray-5' : sync.failed ? 'bg-surface-red-6' : 'bg-surface-green-5'" aria-hidden="true" />
+          {{ !sync.enabled ? 'Excel sync off' : sync.failed ? sync.failed + ' not synced' : 'Synced with Excel' }}
+        </div>
+        <div v-if="sync.enabled" class="mt-1 text-ink-gray-5">Sheet {{ sync.worksheet }} · pushed {{ ago(sync.last_push) }} · read {{ ago(sync.last_pull) }}<span v-if="sync.waiting"> · {{ sync.waiting }} waiting</span></div>
+        <div v-else class="mt-1 text-ink-gray-5">Turn it on in Settings once Microsoft 365 is connected.</div>
+      </div>
+      <SidebarCollapseToggle />
+    </div>
   </Sidebar>
 </template>

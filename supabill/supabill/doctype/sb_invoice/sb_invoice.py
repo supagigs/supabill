@@ -36,6 +36,15 @@ class SBInvoice(Document):
 	def before_update_after_submit(self):
 		self.apply_register_rules()
 
+	def on_update_after_submit(self):
+		if self.flags.from_excel:
+			return
+		watched = ("wallet_reference", "received_inr", "bank_charges_usd", "bank_charges_inr", "payment_status",
+			"upwork_invoice", "upwork_account_holder", "invoice_status", "register_description")
+		if any(self.has_value_changed(f) for f in watched) and frappe.db.get_single_value("SupaBill Settings", "excel_enabled"):
+			frappe.enqueue("supabill.supabill.excel.push_register_update", name=self.name, queue="short",
+				enqueue_after_commit=True, job_id=f"sb-excel-row-{self.name}", deduplicate=True)
+
 	def on_submit(self):
 		first = self.items[0] if self.items else None
 		frappe.db.set_value("SB Client", self.client, {
@@ -43,8 +52,12 @@ class SBInvoice(Document):
 			"last_billing_period": self.billing_period,
 			"last_amount": first.rate if first else 0,
 		}, update_modified=False)
-		self.db_set("excel_sync_status", "Queued")
+		excel_on = frappe.db.get_single_value("SupaBill Settings", "excel_enabled")
+		self.db_set("excel_sync_status", "Queued" if excel_on else "Not synced")
 		frappe.enqueue("supabill.api.output.attach_files", name=self.name, queue="short", enqueue_after_commit=True)
+		if excel_on:
+			frappe.enqueue("supabill.supabill.excel.push_invoice", name=self.name, queue="short",
+				enqueue_after_commit=True, job_id=f"sb-excel-push-{self.name}", deduplicate=True)
 
 	def on_cancel(self):
 		self.db_set("invoice_status", "Cancelled")

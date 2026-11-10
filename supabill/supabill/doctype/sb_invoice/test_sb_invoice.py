@@ -70,7 +70,7 @@ class TestSBInvoice(IntegrationTestCase):
 		inv = self.new_invoice().insert()
 		inv.submit()
 		self.assertEqual(frappe.db.get_value("SB Client", "Acme Test", "last_milestone"), "Milestone 1 of 2")
-		self.assertEqual(inv.excel_sync_status, "Queued")
+		self.assertEqual(inv.excel_sync_status, "Not synced")  # Excel sync off in tests
 		inv.reload()
 		inv.received_inr = 88000
 		inv.bank_charges_inr = 300

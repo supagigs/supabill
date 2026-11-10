@@ -21,7 +21,7 @@ def setup_basics():
 	ensure_codes()
 	s = frappe.get_doc("SupaBill Settings")
 	s.update({"legal_name": "Test Co", "invoice_prefix": PREFIX, "number_digits": 3,
-		"lut_arn": "ARN123", "lut_note": "LUT ARN {ARN}"})
+		"lut_arn": "ARN123", "lut_note": "LUT ARN {ARN}", "excel_enabled": 0})
 	from supabill.supabill.calc import format_invoice_number
 	n = max(int(s.next_invoice_number or 1), 1)
 	while frappe.db.exists("SB Invoice", format_invoice_number(PREFIX, n, 3)):

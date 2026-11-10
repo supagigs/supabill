@@ -17,10 +17,16 @@ def load():
 		"company_email": "billing@example.com", "company_phone": "+91 90000 00000", "gstin": "27AAAAA0000A1Z5",
 		"pan": "AAAAA0000A", "iec": "NA", "invoice_prefix": "Supa/26-27/", "number_digits": 3,
 		"lut_arn": "AD270000000000T", "default_purpose_code": "P0802", "worksheet_name": "2026-27",
+		"excel_enabled": 0, "ms_tenant_id": "", "ms_client_id": "", "workbook_share_link": "", "table_name": "",
+		"cbic_provider": "AllRatesToday", "cbic_last_status": "", "cbic_last_sync": None,
+		"excel_last_push": None, "excel_last_pull": None,
 		"lut_note": "Supply meant for Export under Letter of Undertaking (ARN. {ARN}) without payment of Integrated Tax. Whether the tax is payable on the reverse charge basis – No",
 	})
-	if not frappe.db.exists("SB Invoice", "Supa/26-27/028"):
-		s.next_invoice_number = 28
+	from supabill.supabill.calc import format_invoice_number
+	n = 28
+	while frappe.db.exists("SB Invoice", format_invoice_number("Supa/26-27/", n, 3)):
+		n += 1
+	s.next_invoice_number = n
 	s.flags.ignore_permissions = True
 	s.save()
 	wallets = {

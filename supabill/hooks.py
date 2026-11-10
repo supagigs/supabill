@@ -297,3 +297,13 @@ add_to_apps_screen = [
 		"has_permission": "supabill.api.session.has_app_permission",
 	}
 ]
+
+scheduler_events = {
+	"cron": {
+		# CBIC notifies rates on the 1st and 3rd Thursday; fetch Thursday evening (site time zone).
+		"0 20 * * 4": ["supabill.supabill.cbic.scheduled_sync"],
+		# Excel: retry failed pushes and read payment columns back (interval set in Settings).
+		"*/5 * * * *": ["supabill.supabill.excel.scheduled"],
+	},
+	"daily": ["supabill.supabill.cbic.scheduled_sync"],
+}
