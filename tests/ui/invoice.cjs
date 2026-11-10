@@ -5,7 +5,7 @@ const results = []; const check = (n, ok, x = '') => results.push(`${ok ? 'PASS'
 const pick = async (p, label, opt) => { await p.getByLabel(label).click(); await p.getByRole('option', { name: new RegExp('^' + opt) }).first().click(); };
 const wait = (loc, t = 8000) => loc.waitFor({ timeout: t }).then(() => true, () => false);
 (async () => {
-  const b = await chromium.launch({ args: ['--host-resolver-rules=MAP supabill.local 127.0.0.1', '--no-proxy-server'] });
+  const b = await chromium.launch({ args: ['--host-resolver-rules=MAP *.local 127.0.0.1', '--no-proxy-server'] });
   const c = await b.newContext({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 2 });
   await c.request.post(BASE + '/api/method/login', { form: { usr: 'ui.user@example.com', pwd: 'Test@12345!' } });
   const p = await c.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));

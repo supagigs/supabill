@@ -10,7 +10,7 @@ async function login(b, user) {
   return c;
 }
 (async () => {
-  const b = await chromium.launch({ args: ['--host-resolver-rules=MAP supabill.local 127.0.0.1', '--no-proxy-server'] });
+  const b = await chromium.launch({ args: ['--host-resolver-rules=MAP *.local 127.0.0.1', '--no-proxy-server'] });
   const errs = [];
   let c = await login(b, 'ui.manager@example.com'); let p = await c.newPage(); p.on('pageerror', e => errs.push(e.message));
   const bodies = []; p.on('response', async r => { if (r.url().includes('/api/method/supabill')) { try { bodies.push(await r.text()); } catch {} } });

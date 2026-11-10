@@ -1,5 +1,5 @@
 const { chromium, devices } = require('playwright');
-const BASE = 'http://supabill.local:8001', OUT = process.argv[2];
+const BASE = process.env.SB_BASE || 'http://supabill.local:8001', OUT = process.argv[2] || '.';
 const results = [];
 const check = (name, ok, extra = '') => { results.push(`${ok ? 'PASS' : 'FAIL'}  ${name}${extra ? '  — ' + extra : ''}`); };
 async function ctx(browser, user, opts = {}) {
@@ -11,7 +11,7 @@ async function ctx(browser, user, opts = {}) {
   return c;
 }
 (async () => {
-  const b = await chromium.launch({ args: ['--host-resolver-rules=MAP supabill.local 127.0.0.1', '--no-proxy-server'] });
+  const b = await chromium.launch({ args: ['--host-resolver-rules=MAP *.local 127.0.0.1', '--no-proxy-server'] });
   const errors = [];
   // Guest
   let c = await ctx(b, null), p = await c.newPage();

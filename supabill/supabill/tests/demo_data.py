@@ -59,3 +59,19 @@ def load():
 				"source": "Sample"}).insert()
 	frappe.db.commit()
 	print("demo data loaded")
+
+
+def ui_users(password="Test@12345!"):
+	"""Browser-test users. Throwaway sites only."""
+	from frappe.utils.password import update_password
+	for email, role in (("ui.user@example.com", "SupaBill User"), ("ui.manager@example.com", "SupaBill Manager"),
+			("ui.norole@example.com", None)):
+		if not frappe.db.exists("User", email):
+			u = frappe.get_doc({"doctype": "User", "email": email, "first_name": email.split("@")[0].split(".")[1].title(),
+				"send_welcome_email": 0, "user_type": "System User"})
+			if role:
+				u.append("roles", {"role": role})
+			u.insert(ignore_permissions=True)
+		update_password(email, password)
+	frappe.db.commit()
+	print("ui users ready")

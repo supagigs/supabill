@@ -86,3 +86,12 @@ class TestOutput(IntegrationTestCase):
 			fields=["file_name", "is_private"])
 		self.assertEqual(sorted(f.file_name.rsplit(".", 1)[1] for f in files), ["docx", "pdf"])
 		self.assertTrue(all(f.is_private for f in files))
+
+	def test_html_is_escaped(self):
+		frappe.db.set_value("SB Client", "Acme Test", "client_name", "Acme Test")
+		doc = self.make(billing_address='<img src="file:///etc/passwd">\nLine 2', notes="<script>x()</script>")
+		html = output.render_html(doc)
+		self.assertNotIn('<img src="file:///etc/passwd">', html)
+		self.assertNotIn("<script>x()</script>", html)
+		self.assertIn("&lt;img", html)
+		self.assertIn("<br>Line 2", html)

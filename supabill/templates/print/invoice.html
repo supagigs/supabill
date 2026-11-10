@@ -29,10 +29,11 @@
   .cancel { color: #c62828; font-weight: bold; font-size: 14px; text-align: center; border: 2px solid #c62828; padding: 4px; margin-bottom: 10px; }
 </style></head>
 <body>
+{% autoescape true %}
 {% if cancelled %}<div class="cancel">CANCELLED</div>{% endif %}
 <table class="head"><tr><td class="co">{{ legal_name }}</td><td class="ttl">{{ title }}</td></tr></table>
 <table class="blk"><tr>
-  <td><div class="lb">FROM</div><b>{{ display_name }}</b><br>{{ company_address | e | replace("\n", "<br>") }}<br><br>
+  <td><div class="lb">FROM</div><b>{{ display_name }}</b><br>{{ company_address | e | replace("\n", "<br>" | safe) }}<br><br>
     <span class="k2">Email:</span> {{ company_email }}<br><span class="k2">Contact:</span> {{ company_phone }}<br><span class="k2">GSTIN:</span> {{ gstin }}<br><span class="k2">PAN:</span> {{ pan }}<br><span class="k2">IEC:</span> {{ iec }}</td>
   <td><div class="lb">INVOICE DETAILS</div>
     <table class="kv">
@@ -45,7 +46,7 @@
     </table></td>
 </tr></table>
 <table class="blk"><tr>
-  <td class="shade"><div class="lb">BILL TO</div><b>{{ client_name }}</b><br>{{ billing_address | e | replace("\n", "<br>") }}<br><br>
+  <td class="shade"><div class="lb">BILL TO</div><b>{{ client_name }}</b><br>{{ billing_address | e | replace("\n", "<br>" | safe) }}<br><br>
     {% if attention %}<span class="k2">Attn:</span> {{ attention }}<br>{% endif %}{% if client_email %}<span class="k2">Email:</span> {{ client_email }}{% endif %}</td>
   <td class="shade"><div class="lb">PROJECT &amp; PAYMENT</div><b>{{ project }}</b><br>{{ milestone_line }}<br><br>
     <span class="k2">Payment Terms:</span> {{ payment_terms }}<br><span class="k2">Payment Method:</span> {{ payment_method }}</td>
@@ -63,7 +64,8 @@
   <tr class="g"><td>Total Due ({{ currency }})</td><td class="r">{{ grand_total }}</td></tr>
 </table>
 <table class="notes"><tr>
-  <td><div class="lb">NOTES</div>{% if is_lut %}<b>LUT</b><br>{% endif %}{{ notes | e | replace("\n", "<br>") }}</td>
+  <td><div class="lb">NOTES</div>{% if is_lut %}<b>LUT</b><br>{% endif %}{{ notes | e | replace("\n", "<br>" | safe) }}</td>
   <td><div class="lb">BANK TRANSFER DETAILS</div>{% for b in bank %}<span class="k2">{{ b.label }}:</span> {{ b.value }}<br>{% endfor %}</td>
 </tr></table>
+{% endautoescape %}
 </body></html>

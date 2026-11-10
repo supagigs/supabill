@@ -1,7 +1,7 @@
 {
  "actions": [],
  "autoname": "format:{code_type}-{code}",
- "creation": "2026-11-10 20:00:00.000000",
+ "creation": "2026-11-10 21:00:00.000000",
  "custom": 0,
  "doctype": "DocType",
  "editable_grid": 1,
@@ -40,7 +40,7 @@
  "issingle": 0,
  "istable": 0,
  "links": [],
- "modified": "2026-11-10 20:00:00.000000",
+ "modified": "2026-11-10 21:00:00.000000",
  "modified_by": "Administrator",
  "module": "SupaBill",
  "name": "SB Tax Code",
