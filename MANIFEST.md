@@ -1,7 +1,7 @@
 # SupaBill — release manifest
 
 - **Version:** 1.2.0rc1 (release candidate)
-- **Repository:** https://github.com/supagigs/supabill (branch `claude/supabill-v1`; merge into `main` and tag `v1.2.0-rc1`)
+- **Repository:** https://github.com/supagigs/supabill (branch `main`)
 - **Compatibility:** Frappe v16 (tested 16.55.2 and 16.56.0), Python 3.14, Node 24+, MariaDB 10.6+, Redis. No ERPNext dependency.
 - **Python dependency:** docxtpl 0.20.x (pulls python-docx). **Optional system package:** LibreOffice (exact PDFs).
 - **Frontend:** Vue 3.5, frappe-ui 1.1.0, Vite 6, TypeScript; built by `bench build --app supabill`.
