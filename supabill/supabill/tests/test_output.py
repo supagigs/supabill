@@ -49,8 +49,8 @@ class TestOutput(IntegrationTestCase):
 			self.assertIn(expected, text)
 		self.assertNotIn("{{", text)
 		self.assertNotIn("{%", text)
-		for sample in ("Supa/26-27/027",):
-			self.assertNotIn(sample, text)
+		self.assertNotIn("Supa/26-27/027", text)  # the sample invoice number the template was made from
+		self.assertNotIn("python-docx", text)
 
 	def test_tax_labels(self):
 		c = output.context(self.make(tax_treatment="CGST + SGST 9%"))
