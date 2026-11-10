@@ -39,3 +39,12 @@ class TestSession(IntegrationTestCase):
 		frappe.set_user("Guest")
 		with self.assertRaises(frappe.AuthenticationError):
 			get_session()
+
+
+class TestModulesImport(IntegrationTestCase):
+	def test_every_api_module_imports(self):
+		"""Catches framework API changes (e.g. a decorator moving) on a new Frappe release."""
+		import importlib
+		for mod in ("supabill.api.session", "supabill.api.invoice", "supabill.api.output", "supabill.api.setup",
+				"supabill.api.integrations", "supabill.supabill.cbic", "supabill.supabill.excel"):
+			importlib.import_module(mod)

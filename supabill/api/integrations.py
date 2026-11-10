@@ -1,6 +1,7 @@
 """Manager actions for the integrations. Results are messages safe to show; no secrets."""
 import frappe
 from frappe import _
+from frappe.rate_limiter import rate_limit
 
 from supabill.api.session import user_access
 from supabill.supabill import cbic, excel
@@ -13,14 +14,14 @@ def _manager():
 
 
 @frappe.whitelist(methods=["POST"])
-@frappe.rate_limit(limit=10, seconds=60)
+@rate_limit(limit=10, seconds=60)
 def sync_cbic_now() -> dict:
 	_manager()
 	return cbic.sync(raise_errors=True)
 
 
 @frappe.whitelist(methods=["POST"])
-@frappe.rate_limit(limit=10, seconds=60)
+@rate_limit(limit=10, seconds=60)
 def excel_test() -> dict:
 	_manager()
 	try:
@@ -33,7 +34,7 @@ def excel_test() -> dict:
 
 
 @frappe.whitelist(methods=["POST"])
-@frappe.rate_limit(limit=10, seconds=60)
+@rate_limit(limit=10, seconds=60)
 def excel_sync_now() -> dict:
 	_manager()
 	if not frappe.db.get_single_value("SupaBill Settings", "excel_enabled"):
