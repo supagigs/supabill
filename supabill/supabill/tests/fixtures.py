@@ -22,14 +22,13 @@ def setup_basics():
 	s = frappe.get_doc("SupaBill Settings")
 	s.update({"legal_name": "Test Co", "invoice_prefix": PREFIX, "number_digits": 3,
 		"lut_arn": "ARN123", "lut_note": "LUT ARN {ARN}"})
-	if not s.next_invoice_number or s.next_invoice_number < 1:
-		s.next_invoice_number = 1
+	from supabill.supabill.calc import format_invoice_number
+	n = max(int(s.next_invoice_number or 1), 1)
+	while frappe.db.exists("SB Invoice", format_invoice_number(PREFIX, n, 3)):
+		n += 1
+	s.next_invoice_number = n
 	s.flags.ignore_permissions = True
-	try:
-		s.save()
-	except frappe.ValidationError:
-		s.next_invoice_number = (frappe.db.count("SB Invoice") or 0) + 100
-		s.save()
+	s.save()
 	if not frappe.db.exists("SB Wallet", "Test Wallet"):
 		frappe.get_doc({"doctype": "SB Wallet", "wallet_name": "Test Wallet", "details": [
 			{"label": "Account Number", "value": "123"}, {"label": "Bank Name", "value": "Test Bank"}]}).insert()
