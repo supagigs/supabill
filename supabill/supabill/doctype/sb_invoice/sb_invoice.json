@@ -1,6 +1,6 @@
 {
  "actions": [],
- "creation": "2026-11-10 18:30:00.000000",
+ "creation": "2026-11-10 19:00:00.000000",
  "custom": 0,
  "doctype": "DocType",
  "editable_grid": 1,
@@ -364,6 +364,16 @@
    "read_only": 1
   },
   {
+   "description": "Stops a double click from creating two invoices",
+   "fieldname": "client_request_id",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Client Request ID",
+   "no_copy": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -377,7 +387,7 @@
  "issingle": 0,
  "istable": 0,
  "links": [],
- "modified": "2026-11-10 18:30:00.000000",
+ "modified": "2026-11-10 19:00:00.000000",
  "modified_by": "Administrator",
  "module": "SupaBill",
  "name": "SB Invoice",

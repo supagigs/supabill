@@ -84,19 +84,45 @@ class SBInvoice(Document):
 		self.forex_gain, self.net_received = r["forex_gain"], r["net_received"]
 
 	def check_ready(self):
-		problems = []
-		if not (self.billing_address or "").strip():
-			problems.append(_("Client billing address"))
-		if flt(self.grand_total) <= 0:
-			problems.append(_("Amount greater than zero"))
-		if self.currency != "INR" and flt(self.cbic_rate) <= 0:
-			problems.append(_("CBIC exchange rate for {0} on {1}").format(self.currency, self.invoice_date))
-		if self.wallet:
-			w = frappe.get_cached_doc("SB Wallet", self.wallet)
-			if not w.is_upwork and (not w.details or any(not (d.value or "").strip() for d in w.details)):
-				problems.append(_("Bank details for wallet {0}").format(self.wallet))
-		if problems:
-			frappe.throw(_("Fix before saving: {0}").format(", ".join(problems)), title=_("Invoice not ready"))
+		blocking = [m for level, m in readiness(self) if level == "error"]
+		if blocking:
+			frappe.throw(_("Fix before saving: {0}").format(", ".join(blocking)), title=_("Invoice not ready"))
+
+
+def readiness(doc) -> list[tuple[str, str]]:
+	"""(level, message) pairs. 'error' blocks saving, 'warning' is shown but allowed."""
+	out = []
+	err = lambda m: out.append(("error", m))  # noqa: E731
+	warn = lambda m: out.append(("warning", m))  # noqa: E731
+	if not doc.client:
+		err(_("Client"))
+	if not (doc.billing_address or "").strip():
+		err(_("Client billing address"))
+	if flt(doc.grand_total) <= 0:
+		err(_("Amount greater than zero"))
+	if not doc.invoice_date:
+		err(_("Invoice date"))
+	if doc.currency != "INR" and flt(doc.cbic_rate) <= 0:
+		err(_("CBIC exchange rate for {0} on {1}").format(doc.currency, doc.invoice_date))
+	if not doc.wallet:
+		err(_("Wallet"))
+	else:
+		w = frappe.get_cached_doc("SB Wallet", doc.wallet)
+		if not w.is_upwork and (not w.details or any(not (d.value or "").strip() for d in w.details)):
+			err(_("Bank details for wallet {0}").format(doc.wallet))
+		if doc.wallet == "Others" and not (doc.wallet_name_other or "").strip():
+			warn(_("Name of the wallet for 'Others'"))
+		if not w.is_upwork and not (doc.wallet_reference or "").strip():
+			warn(_("Wallet reference no. (can be added later in the register)"))
+	if not (doc.client_email or "").strip():
+		warn(_("Client email"))
+	if not (doc.billing_period or "").strip():
+		warn(_("Billing period"))
+	if doc.tax_treatment == "Export under LUT" and not doc.purpose_code:
+		warn(_("Purpose code"))
+	if not doc.client_country:
+		warn(_("Client country"))
+	return out
 
 
 def next_invoice_name() -> str:

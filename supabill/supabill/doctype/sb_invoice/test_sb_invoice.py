@@ -1,45 +1,18 @@
 import frappe
 from frappe.tests import IntegrationTestCase
 
-from supabill.supabill.install import ensure_roles
 
 EXTRA_TEST_RECORD_DEPENDENCIES = []
 IGNORE_TEST_RECORD_DEPENDENCIES = ["SB Client", "SB Wallet", "Currency", "Country", "SB Purpose Code"]
 
-PREFIX = "TST/26-27/"
-
-
-def make_user(email, role):
-	if not frappe.db.exists("User", email):
-		frappe.get_doc({"doctype": "User", "email": email, "first_name": email.split("@")[0],
-			"send_welcome_email": 0, "roles": [{"role": role}]}).insert(ignore_permissions=True)
-	return email
+from supabill.supabill.tests.fixtures import PREFIX, make_user, setup_basics
 
 
 class TestSBInvoice(IntegrationTestCase):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()
-		ensure_roles()
-		s = frappe.get_doc("SupaBill Settings")
-		s.update({"legal_name": "Test Co", "invoice_prefix": PREFIX, "number_digits": 3,
-			"lut_arn": "ARN123", "lut_note": "LUT ARN {ARN}"})
-		s.next_invoice_number = 1
-		s.save(ignore_permissions=True)
-		if not frappe.db.exists("SB Wallet", "Test Wallet"):
-			frappe.get_doc({"doctype": "SB Wallet", "wallet_name": "Test Wallet", "details": [
-				{"label": "Account Number", "value": "123"}, {"label": "Bank Name", "value": "Test Bank"}]}).insert()
-		if not frappe.db.exists("SB Wallet", "Half Wallet"):
-			frappe.get_doc({"doctype": "SB Wallet", "wallet_name": "Half Wallet", "details": [
-				{"label": "Account Number", "value": ""}]}).insert()
-		if not frappe.db.exists("SB Client", "Acme Test"):
-			frappe.get_doc({"doctype": "SB Client", "client_name": "Acme Test", "address": "1 Main St",
-				"country": "United States", "currency": "USD", "wallet": "Test Wallet",
-				"payment_terms_days": 21}).insert()
-		for d, r in (("2026-10-17", 88.10), ("2026-11-07", 88.45)):
-			if not frappe.db.exists("SB CBIC Rate", f"USD-{d}"):
-				frappe.get_doc({"doctype": "SB CBIC Rate", "currency": "USD", "effective_from": d,
-					"export_rate": r, "source": "Manual"}).insert()
+		setup_basics()
 		cls.user = make_user("sb.user@example.com", "SupaBill User")
 		cls.manager = make_user("sb.manager@example.com", "SupaBill Manager")
 
