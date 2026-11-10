@@ -1,0 +1,192 @@
+{
+ "actions": [],
+ "autoname": "field:client_name",
+ "creation": "2026-11-10 18:30:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "fields": [
+  {
+   "fieldname": "client_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Client Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "contact_person",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Contact Person"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Billing Address"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "billing_section",
+   "fieldtype": "Section Break",
+   "label": "Billing Defaults"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Data",
+   "label": "Default Project"
+  },
+  {
+   "default": "USD",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "default": "21",
+   "fieldname": "payment_terms_days",
+   "fieldtype": "Int",
+   "label": "Payment Terms (days)"
+  },
+  {
+   "default": "Export under LUT",
+   "fieldname": "tax_treatment",
+   "fieldtype": "Select",
+   "label": "Tax Treatment",
+   "options": "Export under LUT\nIGST 18%\nCGST + SGST 9%"
+  },
+  {
+   "fieldname": "cb2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "wallet",
+   "fieldtype": "Link",
+   "label": "Receive Via (Wallet)",
+   "options": "SB Wallet"
+  },
+  {
+   "default": "ACH bank transfer",
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "ACH bank transfer\nWire transfer (SWIFT)\nUpwork\nNEFT / RTGS / UPI"
+  },
+  {
+   "fieldname": "purpose_code",
+   "fieldtype": "Link",
+   "label": "Purpose Code",
+   "options": "SB Purpose Code"
+  },
+  {
+   "fieldname": "sac_code",
+   "fieldtype": "Data",
+   "label": "SAC Code"
+  },
+  {
+   "fieldname": "hsn_code",
+   "fieldtype": "Data",
+   "label": "HSN Code"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "last_section",
+   "fieldtype": "Section Break",
+   "label": "Last Invoice"
+  },
+  {
+   "fieldname": "last_milestone",
+   "fieldtype": "Data",
+   "label": "Last Milestone"
+  },
+  {
+   "fieldname": "last_billing_period",
+   "fieldtype": "Data",
+   "label": "Last Billing Period"
+  },
+  {
+   "fieldname": "cb3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_amount",
+   "fieldtype": "Currency",
+   "label": "Last Amount",
+   "options": "currency"
+  }
+ ],
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-11-10 18:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "SupaBill",
+ "name": "SB Client",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill User",
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "search_fields": "contact_person,country",
+ "sort_field": "client_name",
+ "sort_order": "ASC",
+ "states": [],
+ "track_changes": 1
+}

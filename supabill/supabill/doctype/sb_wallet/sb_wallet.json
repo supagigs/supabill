@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "autoname": "field:wallet_name",
+ "creation": "2026-11-10 18:30:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "fields": [
+  {
+   "fieldname": "wallet_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Wallet Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "description": "Invoices for this wallet need no bank details",
+   "fieldname": "is_upwork",
+   "fieldtype": "Check",
+   "label": "Paid via Upwork"
+  },
+  {
+   "default": "IDFC FIRST Bank",
+   "description": "Indian bank account this wallet pays out to",
+   "fieldname": "settles_to",
+   "fieldtype": "Data",
+   "label": "Settles To"
+  },
+  {
+   "fieldname": "disabled",
+   "fieldtype": "Check",
+   "label": "Disabled"
+  },
+  {
+   "description": "Printed under Bank Transfer Details on the invoice",
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Bank Transfer Details"
+  },
+  {
+   "fieldname": "details",
+   "fieldtype": "Table",
+   "label": "Details",
+   "options": "SB Wallet Detail"
+  }
+ ],
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-11-10 18:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "SupaBill",
+ "name": "SB Wallet",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "SupaBill User"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "wallet_name",
+ "sort_order": "ASC",
+ "states": []
+}

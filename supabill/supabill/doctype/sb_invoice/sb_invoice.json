@@ -1,0 +1,434 @@
+{
+ "actions": [],
+ "creation": "2026-11-10 18:30:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "fields": [
+  {
+   "fieldname": "client_section",
+   "fieldtype": "Section Break",
+   "label": "Bill To"
+  },
+  {
+   "fieldname": "client",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Client",
+   "options": "SB Client",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "client.client_name",
+   "fetch_if_empty": 1,
+   "fieldname": "client_name",
+   "fieldtype": "Data",
+   "label": "Client Name"
+  },
+  {
+   "fieldname": "attention",
+   "fieldtype": "Data",
+   "label": "Attention"
+  },
+  {
+   "fieldname": "client_email",
+   "fieldtype": "Data",
+   "label": "Client Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "cb_client",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "billing_address",
+   "fieldtype": "Small Text",
+   "label": "Billing Address"
+  },
+  {
+   "fieldname": "client_country",
+   "fieldtype": "Link",
+   "label": "Client Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "project_section",
+   "fieldtype": "Section Break",
+   "label": "Project"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Data",
+   "label": "Project"
+  },
+  {
+   "fieldname": "milestone",
+   "fieldtype": "Data",
+   "label": "Milestone"
+  },
+  {
+   "fieldname": "billing_period",
+   "fieldtype": "Data",
+   "label": "Billing Period"
+  },
+  {
+   "fieldname": "cb_project",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "invoice_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Invoice Date",
+   "reqd": 1
+  },
+  {
+   "default": "21",
+   "fieldname": "payment_terms_days",
+   "fieldtype": "Int",
+   "label": "Payment Terms (days)"
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "label": "Due Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_section",
+   "fieldtype": "Section Break",
+   "label": "Payment"
+  },
+  {
+   "default": "USD",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "wallet",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Receive Via (Wallet)",
+   "options": "SB Wallet",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.wallet=='Others'",
+   "fieldname": "wallet_name_other",
+   "fieldtype": "Data",
+   "label": "Wallet Name (Others)"
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Select",
+   "label": "Payment Method",
+   "options": "ACH bank transfer\nWire transfer (SWIFT)\nUpwork\nNEFT / RTGS / UPI"
+  },
+  {
+   "fieldname": "cb_payment",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Export under LUT",
+   "fieldname": "tax_treatment",
+   "fieldtype": "Select",
+   "label": "Tax Treatment",
+   "options": "Export under LUT\nIGST 18%\nCGST + SGST 9%",
+   "reqd": 1
+  },
+  {
+   "fieldname": "purpose_code",
+   "fieldtype": "Link",
+   "label": "Purpose Code",
+   "options": "SB Purpose Code"
+  },
+  {
+   "fieldname": "country_of_supply",
+   "fieldtype": "Data",
+   "label": "Country of Supply"
+  },
+  {
+   "fieldname": "items_section",
+   "fieldtype": "Section Break",
+   "label": "Items"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "SB Invoice Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "totals_section",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "subtotal",
+   "fieldtype": "Currency",
+   "label": "Sub Total",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tax_total",
+   "fieldtype": "Currency",
+   "label": "Tax",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Total Due",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cb_totals",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cbic_rate",
+   "fieldtype": "Float",
+   "label": "CBIC Export Rate",
+   "precision": "4"
+  },
+  {
+   "default": "Auto",
+   "fieldname": "cbic_rate_source",
+   "fieldtype": "Select",
+   "label": "CBIC Rate Source",
+   "options": "Auto\nManual"
+  },
+  {
+   "fieldname": "cbic_rate_effective_from",
+   "fieldtype": "Date",
+   "label": "Rate Notified From",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_inr",
+   "fieldtype": "Currency",
+   "label": "Amount in INR",
+   "options": "INR",
+   "read_only": 1
+  },
+  {
+   "fieldname": "gst_return_period",
+   "fieldtype": "Data",
+   "label": "GST Return",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Notes & Bank Details"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "bank_details",
+   "fieldtype": "Small Text",
+   "label": "Bank Details (snapshot)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "register_section",
+   "fieldtype": "Section Break",
+   "label": "Sales Register"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "register_description",
+   "fieldtype": "Data",
+   "label": "Register Description"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "wallet_reference",
+   "fieldtype": "Data",
+   "label": "Wallet Reference No."
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "upwork_invoice",
+   "fieldtype": "Data",
+   "label": "Upwork Invoice"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "upwork_account_holder",
+   "fieldtype": "Data",
+   "label": "Upwork Account Holder"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Raised",
+   "fieldname": "invoice_status",
+   "fieldtype": "Select",
+   "label": "Invoice Status",
+   "options": "Raised\nSent\nCancelled"
+  },
+  {
+   "fieldname": "cb_register",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "received_inr",
+   "fieldtype": "Currency",
+   "label": "Received (INR)",
+   "options": "INR"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "bank_charges_usd",
+   "fieldtype": "Float",
+   "label": "Bank Charges (in foreign currency)",
+   "precision": "2"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "bank_charges_inr",
+   "fieldtype": "Currency",
+   "label": "Bank Charges (INR)",
+   "options": "INR"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Pending",
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Payment Status",
+   "options": "Pending\nPartially received\nReceived"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "forex_gain",
+   "fieldtype": "Currency",
+   "label": "Forex Gain",
+   "options": "INR",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "net_received",
+   "fieldtype": "Currency",
+   "label": "Net Received",
+   "options": "INR",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "excel_section",
+   "fieldtype": "Section Break",
+   "label": "Excel Sync"
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "Not synced",
+   "fieldname": "excel_sync_status",
+   "fieldtype": "Select",
+   "label": "Excel Sync Status",
+   "options": "Not synced\nQueued\nSynced\nFailed",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "excel_row",
+   "fieldtype": "Int",
+   "label": "Excel Row",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "excel_last_synced",
+   "fieldtype": "Datetime",
+   "label": "Last Synced",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "SB Invoice",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-11-10 18:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "SupaBill",
+ "name": "SB Invoice",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill User",
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "client_name",
+ "track_changes": 1
+}

@@ -1,0 +1,334 @@
+{
+ "actions": [],
+ "creation": "2026-11-10 18:30:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "fields": [
+  {
+   "fieldname": "company_section",
+   "fieldtype": "Section Break",
+   "label": "Company"
+  },
+  {
+   "fieldname": "legal_name",
+   "fieldtype": "Data",
+   "label": "Legal Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "display_name",
+   "fieldtype": "Data",
+   "label": "Display Name"
+  },
+  {
+   "fieldname": "company_address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "cb_company",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company_email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "company_phone",
+   "fieldtype": "Data",
+   "label": "Contact"
+  },
+  {
+   "fieldname": "gstin",
+   "fieldtype": "Data",
+   "label": "GSTIN"
+  },
+  {
+   "fieldname": "pan",
+   "fieldtype": "Data",
+   "label": "PAN"
+  },
+  {
+   "fieldname": "iec",
+   "fieldtype": "Data",
+   "label": "IEC"
+  },
+  {
+   "fieldname": "numbering_section",
+   "fieldtype": "Section Break",
+   "label": "Invoice Numbering"
+  },
+  {
+   "default": "Supa/26-27/",
+   "fieldname": "invoice_prefix",
+   "fieldtype": "Data",
+   "label": "Prefix",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "description": "Increases by one each time an invoice is created",
+   "fieldname": "next_invoice_number",
+   "fieldtype": "Int",
+   "label": "Next Number",
+   "reqd": 1
+  },
+  {
+   "default": "3",
+   "fieldname": "number_digits",
+   "fieldtype": "Int",
+   "label": "Digits"
+  },
+  {
+   "fieldname": "defaults_section",
+   "fieldtype": "Section Break",
+   "label": "Invoice Defaults"
+  },
+  {
+   "default": "USD",
+   "fieldname": "default_currency",
+   "fieldtype": "Link",
+   "label": "Default Currency",
+   "options": "Currency"
+  },
+  {
+   "default": "21",
+   "fieldname": "default_terms_days",
+   "fieldtype": "Int",
+   "label": "Default Terms (days)"
+  },
+  {
+   "default": "India",
+   "fieldname": "country_of_supply",
+   "fieldtype": "Data",
+   "label": "Country of Supply"
+  },
+  {
+   "description": "Used only when no notified rate covers the invoice date",
+   "fieldname": "default_cbic_rate",
+   "fieldtype": "Float",
+   "label": "Fallback CBIC Rate",
+   "precision": "4"
+  },
+  {
+   "fieldname": "cb_defaults",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "default_sac",
+   "fieldtype": "Data",
+   "label": "Default SAC"
+  },
+  {
+   "fieldname": "default_hsn",
+   "fieldtype": "Data",
+   "label": "Default HSN"
+  },
+  {
+   "fieldname": "default_purpose_code",
+   "fieldtype": "Link",
+   "label": "Default Purpose Code",
+   "options": "SB Purpose Code"
+  },
+  {
+   "fieldname": "lut_section",
+   "fieldtype": "Section Break",
+   "label": "Export / LUT"
+  },
+  {
+   "fieldname": "lut_arn",
+   "fieldtype": "Data",
+   "label": "LUT ARN"
+  },
+  {
+   "description": "{ARN} is replaced with the LUT ARN when printed",
+   "fieldname": "lut_note",
+   "fieldtype": "Small Text",
+   "label": "LUT Note"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "ad_section",
+   "fieldtype": "Section Break",
+   "label": "AD Bank (settlement)"
+  },
+  {
+   "default": "IDFC FIRST Bank Ltd.",
+   "fieldname": "ad_bank_name",
+   "fieldtype": "Data",
+   "label": "AD Bank Name"
+  },
+  {
+   "fieldname": "ad_code",
+   "fieldtype": "Data",
+   "label": "AD Code"
+  },
+  {
+   "fieldname": "cb_ad",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "ad_branch_address",
+   "fieldtype": "Small Text",
+   "label": "Branch Address"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "signatory_section",
+   "fieldtype": "Section Break",
+   "label": "Signatory"
+  },
+  {
+   "fieldname": "signatory_name",
+   "fieldtype": "Data",
+   "label": "Authorised Signatory"
+  },
+  {
+   "default": "Director",
+   "fieldname": "signatory_designation",
+   "fieldtype": "Data",
+   "label": "Designation"
+  },
+  {
+   "default": "Mumbai",
+   "fieldname": "signatory_place",
+   "fieldtype": "Data",
+   "label": "Place"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "excel_section",
+   "fieldtype": "Section Break",
+   "label": "Excel Sync (Microsoft 365)"
+  },
+  {
+   "fieldname": "excel_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Excel Sync"
+  },
+  {
+   "fieldname": "ms_tenant_id",
+   "fieldtype": "Data",
+   "label": "Tenant ID"
+  },
+  {
+   "fieldname": "ms_client_id",
+   "fieldtype": "Data",
+   "label": "Client ID"
+  },
+  {
+   "fieldname": "ms_client_secret",
+   "fieldtype": "Password",
+   "label": "Client Secret"
+  },
+  {
+   "fieldname": "cb_excel",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "workbook_share_link",
+   "fieldtype": "Small Text",
+   "label": "Workbook Share Link"
+  },
+  {
+   "default": "2026-27",
+   "fieldname": "worksheet_name",
+   "fieldtype": "Data",
+   "label": "Worksheet"
+  },
+  {
+   "fieldname": "table_name",
+   "fieldtype": "Data",
+   "label": "Excel Table Name"
+  },
+  {
+   "default": "5",
+   "fieldname": "pull_interval_minutes",
+   "fieldtype": "Int",
+   "label": "Pull Interval (minutes)"
+  },
+  {
+   "fieldname": "excel_last_push",
+   "fieldtype": "Datetime",
+   "label": "Last Push",
+   "read_only": 1
+  },
+  {
+   "fieldname": "excel_last_pull",
+   "fieldtype": "Datetime",
+   "label": "Last Pull",
+   "read_only": 1
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "cbic_section",
+   "fieldtype": "Section Break",
+   "label": "CBIC Exchange Rates"
+  },
+  {
+   "default": "AllRatesToday",
+   "fieldname": "cbic_provider",
+   "fieldtype": "Select",
+   "label": "Provider",
+   "options": "AllRatesToday\nManual"
+  },
+  {
+   "fieldname": "allratestoday_api_key",
+   "fieldtype": "Password",
+   "label": "AllRatesToday API Key"
+  },
+  {
+   "fieldname": "cb_cbic",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cbic_last_sync",
+   "fieldtype": "Datetime",
+   "label": "Last Sync",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cbic_last_status",
+   "fieldtype": "Small Text",
+   "label": "Last Status",
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 0,
+ "issingle": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-11-10 18:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "SupaBill",
+ "name": "SupaBill Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "print": 1,
+   "read": 1,
+   "role": "SupaBill Manager",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "SupaBill User"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
