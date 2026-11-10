@@ -44,6 +44,11 @@ const wait = (loc, t = 8000) => loc.waitFor({ timeout: t }).then(() => true, () 
   check('Server totals match', d.grand_total === 1972.42 && d.cbic_rate === 88.45 && Math.abs(d.amount_inr - 174460.55) < 0.01, `${d.grand_total} × ${d.cbic_rate} = ${d.amount_inr}`);
   check('Due date from Net 21', d.due_date === '2026-12-01', d.due_date);
   check('Bank details copied onto invoice', (d.bank_details || '').includes('Account Number: 000111222333'));
+  for (const fmt of ['pdf', 'docx']) {
+    const r = await c.request.get(BASE + '/api/method/supabill.api.output.download?name=' + encodeURIComponent(name) + '&fmt=' + fmt);
+    const body = await r.body();
+    check('Download ' + fmt.toUpperCase(), r.ok() && (fmt === 'pdf' ? body.slice(0, 4).toString() === '%PDF' : body.slice(0, 2).toString() === 'PK'), r.status() + ' ' + (r.headers()['content-disposition'] || ''));
+  }
   // double click protection: press again — no second invoice
   const count = async () => (await (await c.request.get(BASE + '/api/method/frappe.client.get_count?doctype=SB%20Invoice&filters=' + encodeURIComponent(JSON.stringify({ client: 'Northwind Rentals' })))).json()).message;
   const before = await count();

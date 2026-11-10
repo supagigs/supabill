@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>{{ name }}</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #1b1f2a; font-size: 13px; line-height: 1.5; margin: 0; }
+  table { border-collapse: collapse; width: 100%; }
+  td { vertical-align: top; }
+  .head td { border-bottom: 1.5px solid #1b1f2a; padding-bottom: 10px; }
+  .co { font-size: 21px; font-weight: bold; color: #16213e; }
+  .ttl { font-size: 26px; font-weight: bold; letter-spacing: 1px; color: #4a5568; text-align: right; }
+  .lb { font-size: 9.5px; font-weight: bold; letter-spacing: 1.2px; color: #5b6475; border-bottom: 1px solid #dfe3ea; padding-bottom: 3px; margin-bottom: 6px; }
+  .blk td { padding-top: 16px; width: 50%; }
+  .blk td:first-child { padding-right: 18px; }
+  .kv td { padding: 1px 0; width: auto; }
+  .kv td.k { color: #5b6475; width: 125px; font-weight: bold; }
+  .k2 { color: #5b6475; font-weight: bold; }
+  .shade { background: #f3f5f9; padding: 8px 10px !important; }
+  .items { margin-top: 18px; }
+  .items th { background: #16213e; color: #fff; font-size: 10px; text-align: left; padding: 6px 7px; }
+  .items td { padding: 7px; border-bottom: 1px solid #e6e9ef; }
+  .r { text-align: right; }
+  .tot { width: 300px; margin: 12px 0 0 auto; }
+  .tot td { padding: 4px 0; border-bottom: 1px solid #eef0f4; }
+  .tot tr.g td { background: #16213e; color: #fff; border: none; font-weight: bold; font-size: 14px; padding: 7px 8px; }
+  .tot td { padding-left: 8px; padding-right: 8px; }
+  .foot { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; color: #8a93a3; font-size: 10px; }
+  .notes td { padding-top: 22px; width: 50%; font-size: 10.5px; }
+  .notes td:first-child { padding-right: 18px; }
+  .cancel { color: #c62828; font-weight: bold; font-size: 14px; text-align: center; border: 2px solid #c62828; padding: 4px; margin-bottom: 10px; }
+</style></head>
+<body>
+{% if cancelled %}<div class="cancel">CANCELLED</div>{% endif %}
+<table class="head"><tr><td class="co">{{ legal_name }}</td><td class="ttl">{{ title }}</td></tr></table>
+<table class="blk"><tr>
+  <td><div class="lb">FROM</div><b>{{ display_name }}</b><br>{{ company_address | e | replace("\n", "<br>") }}<br><br>
+    <span class="k2">Email:</span> {{ company_email }}<br><span class="k2">Contact:</span> {{ company_phone }}<br><span class="k2">GSTIN:</span> {{ gstin }}<br><span class="k2">PAN:</span> {{ pan }}<br><span class="k2">IEC:</span> {{ iec }}</td>
+  <td><div class="lb">INVOICE DETAILS</div>
+    <table class="kv">
+      <tr><td class="k">Invoice No:</td><td><b>{{ name }}</b></td></tr>
+      <tr><td class="k">Invoice Date:</td><td>{{ invoice_date }}</td></tr>
+      <tr><td class="k">Due Date:</td><td>{{ due_date }}</td></tr>
+      <tr><td class="k">Country of Supply:</td><td>{{ country_of_supply }}</td></tr>
+      {% if purpose_code %}<tr><td class="k">Purpose Code:</td><td>{{ purpose_code }}</td></tr>{% endif %}
+      <tr><td class="k">Currency:</td><td>{{ currency }}</td></tr>
+    </table></td>
+</tr></table>
+<table class="blk"><tr>
+  <td class="shade"><div class="lb">BILL TO</div><b>{{ client_name }}</b><br>{{ billing_address | e | replace("\n", "<br>") }}<br><br>
+    {% if attention %}<span class="k2">Attn:</span> {{ attention }}<br>{% endif %}{% if client_email %}<span class="k2">Email:</span> {{ client_email }}{% endif %}</td>
+  <td class="shade"><div class="lb">PROJECT &amp; PAYMENT</div><b>{{ project }}</b><br>{{ milestone_line }}<br><br>
+    <span class="k2">Payment Terms:</span> {{ payment_terms }}<br><span class="k2">Payment Method:</span> {{ payment_method }}</td>
+</tr></table>
+<table class="items">
+  <thead><tr><th>#</th><th>Item Description</th>{% if has_hsn %}<th>HSN</th>{% endif %}<th>SAC Code</th>
+    <th class="r">Unit Price</th><th class="r">Qty</th><th class="r">Tax</th><th class="r">Line Total</th></tr></thead>
+  <tbody>{% for it in items %}<tr><td>{{ it.idx }}</td><td>{{ it.description }}</td>{% if has_hsn %}<td>{{ it.hsn }}</td>{% endif %}
+    <td>{{ it.sac }}</td><td class="r">{{ it.rate }}</td><td class="r">{{ it.qty }}</td><td class="r">{{ it.tax }}</td><td class="r">{{ it.amount }}</td></tr>{% endfor %}</tbody>
+</table>
+<table class="tot">
+  <tr><td>Sub Total</td><td class="r">{{ subtotal }}</td></tr>
+  {% if split_tax %}<tr><td>CGST 9%</td><td class="r">{{ tax_half }}</td></tr><tr><td>SGST 9%</td><td class="r">{{ tax_half }}</td></tr>
+  {% else %}<tr><td>{{ tax_label }}</td><td class="r">{{ tax_total }}</td></tr>{% endif %}
+  <tr class="g"><td>Total Due ({{ currency }})</td><td class="r">{{ grand_total }}</td></tr>
+</table>
+<table class="notes"><tr>
+  <td><div class="lb">NOTES</div>{% if is_lut %}<b>LUT</b><br>{% endif %}{{ notes | e | replace("\n", "<br>") }}</td>
+  <td><div class="lb">BANK TRANSFER DETAILS</div>{% for b in bank %}<span class="k2">{{ b.label }}:</span> {{ b.value }}<br>{% endfor %}</td>
+</tr></table>
+</body></html>

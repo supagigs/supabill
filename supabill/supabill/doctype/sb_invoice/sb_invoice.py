@@ -44,6 +44,7 @@ class SBInvoice(Document):
 			"last_amount": first.rate if first else 0,
 		}, update_modified=False)
 		self.db_set("excel_sync_status", "Queued")
+		frappe.enqueue("supabill.api.output.attach_files", name=self.name, queue="short", enqueue_after_commit=True)
 
 	def on_cancel(self):
 		self.db_set("invoice_status", "Cancelled")
