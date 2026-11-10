@@ -2,6 +2,7 @@
 const { chromium } = require('playwright');
 const BASE = process.env.SB_BASE || 'http://supabill.local:8001', OUT = process.argv[2] || '.';
 const results = [];
+const REMARK = 'UI remark ' + Date.now().toString(36);
 const check = (name, ok, extra = '') => results.push(`${ok ? 'PASS' : 'FAIL'}  ${name}${extra ? '  — ' + extra : ''}`);
 async function ctx(b, user) {
   const c = await b.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
@@ -39,13 +40,13 @@ async function ctx(b, user) {
   check('Due-date banner shows', await p.getByText(/EDF (is|was) due/).isVisible());
   const remarks = p.getByLabel(/^Remarks for /).first();
   const firstLbl = await remarks.getAttribute('aria-label');
-  await remarks.fill('UI test remark');
+  await remarks.fill(REMARK);
   await Promise.all([p.waitForResponse((r) => r.url().includes('edf.save_edf')), remarks.press('Tab')]);
   await p.reload(); await p.getByRole('tab').first().waitFor();
   await p.getByRole('tab', { name: new RegExp(new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })) }).click();
   await p.getByText('2B. Services provided').waitFor(); await p.waitForTimeout(500);
   const got = await p.getByLabel(/^Remarks for /).first().inputValue(), lbl = await p.getByLabel(/^Remarks for /).first().getAttribute('aria-label');
-  check('Remark is saved on the draft', got === 'UI test remark', lbl + ' = ' + got + ' / filled ' + firstLbl);
+  check('Remark is saved on the draft', got === REMARK, lbl + ' = ' + got + ' / filled ' + firstLbl);
   const nrv = p.getByLabel(/^Net realisable value for /).first();
   const amt = Number(await nrv.inputValue());
   await nrv.fill(String(amt * 2));
