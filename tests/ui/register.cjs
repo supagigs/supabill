@@ -1,0 +1,58 @@
+// Section 8: Sales register. Usage: node register.cjs <shots-dir>
+const { chromium } = require('playwright');
+const fs = require('fs');
+const BASE = process.env.SB_BASE || 'http://supabill.local:8001', OUT = process.argv[2] || '.';
+const results = []; const check = (n, ok, x = '') => results.push(`${ok ? 'PASS' : 'FAIL'}  ${n}${x ? '  — ' + x : ''}`);
+const wait = (loc, t = 8000) => loc.waitFor({ timeout: t }).then(() => true, () => false);
+const pick = async (p, label, opt) => { await p.getByRole('combobox', { name: label, exact: true }).click(); await p.getByRole('option', { name: opt, exact: true }).first().click(); };
+async function login(b, user) {
+  const c = await b.newContext({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 2, acceptDownloads: true });
+  await c.request.post(BASE + '/api/method/login', { form: { usr: user, pwd: 'Test@12345!' } });
+  return c;
+}
+(async () => {
+  const b = await chromium.launch({ args: ['--host-resolver-rules=MAP supabill.local 127.0.0.1', '--no-proxy-server'] });
+  const errs = [];
+  let c = await login(b, 'ui.user@example.com'); let p = await c.newPage(); p.on('pageerror', e => errs.push(e.message));
+  await p.goto(BASE + '/supabill/register');
+  check('Register lists invoices', await wait(p.locator('tr[data-invoice]').first()));
+  const total = await p.locator('tr[data-invoice]').count();
+  await pick(p, 'Client', 'Northwind Rentals');
+  await p.waitForTimeout(700);
+  const names = await p.locator('tr[data-invoice] td:nth-child(8)').allInnerTexts();
+  check('Client filter', names.length > 0 && names.every(n => n === 'Northwind Rentals'), `${names.length} of ${total}`);
+  const inv = await p.evaluate(() => [...document.querySelectorAll('tr[data-invoice]')].find(tr => { const s = tr.querySelector('select'); return s && s.value === 'Pending'; })?.dataset.invoice);
+  const row = p.locator(`tr[data-invoice="${inv}"]`);
+  const rec = row.getByLabel(`Received for ${inv}`);
+  await rec.fill('174000'); await rec.press('Tab');
+  check('Received sets payment status', await wait(p.getByText('Payment status set to “Received”')));
+  await p.waitForTimeout(400);
+  const forex = (await row.locator('td').nth(16).innerText()).trim();
+  check('Forex gain calculated', forex.startsWith('-'), forex);
+  const ref = row.getByLabel(`Wallet reference for ${inv}`);
+  await ref.fill('WREF-1'); await ref.press('Tab'); await p.waitForTimeout(600);
+  const api = await (await c.request.get(BASE + '/api/resource/SB Invoice/' + encodeURIComponent(inv))).json();
+  check('Saved on server', api.data.received_inr === 174000 && api.data.wallet_reference === 'WREF-1' && api.data.payment_status === 'Received', `${api.data.received_inr} ${api.data.wallet_reference} ${api.data.payment_status}`);
+  await pick(p, 'Client', 'All clients');
+  await p.getByLabel('Search register').fill(inv); await p.waitForTimeout(700);
+  check('Search by invoice number', (await p.locator('tr[data-invoice]').count()) === 1);
+  await p.getByLabel('Search register').fill(''); await p.waitForTimeout(600);
+  const [dl] = await Promise.all([p.waitForEvent('download'), p.getByRole('button', { name: 'Export .csv' }).click()]);
+  const csv = fs.readFileSync(await dl.path(), 'utf8');
+  check('CSV export has Excel headers and rows', csv.includes('Original Invoice Number') && csv.includes(inv), dl.suggestedFilename());
+  check('User cannot cancel', (await p.getByRole('button', { name: 'Cancel', exact: true }).count()) === 0);
+  await p.screenshot({ path: OUT + '/30-register.png' });
+  await c.close();
+  c = await login(b, 'ui.manager@example.com'); p = await c.newPage(); p.on('pageerror', e => errs.push(e.message));
+  await p.goto(BASE + '/supabill/register');
+  await wait(p.locator('tr[data-invoice]').first());
+  const btn = p.getByRole('button', { name: 'Cancel', exact: true }).last();
+  const lastName = await btn.evaluate(b => b.closest('tr').dataset.invoice);
+  await btn.click();
+  await p.getByRole('button', { name: 'Cancel invoice' }).click();
+  check('Manager cancels an invoice', await wait(p.getByText(`${lastName} cancelled`)));
+  await p.waitForTimeout(600);
+  check('Cancelled row stays, marked', await wait(p.locator(`tr[data-invoice="${lastName}"]`).getByText('Cancelled').first()));
+  check('No JavaScript errors', errs.length === 0, errs.join(' | '));
+  console.log(results.join('\n')); await b.close();
+})().catch(e => { console.log(results.join('\n')); console.error('FATAL', e.message); process.exit(1); });

@@ -54,8 +54,8 @@ def compute_lines(items, treatment: str, precision: int = 2) -> dict:
 
 def register_calcs(amount_inr, received_inr, bank_charges_inr) -> dict:
 	"""Forex gain and net received follow the Excel sheet: P-O and P-charges."""
-	if received_inr in (None, ""):
-		return {"forex_gain": None, "net_received": None}
+	if received_inr in (None, "") or not flt(received_inr):
+		return {"forex_gain": None, "net_received": None}  # 0 means "not received yet"
 	received = flt(received_inr, 2)
 	return {
 		"forex_gain": flt(received - flt(amount_inr, 2), 2),

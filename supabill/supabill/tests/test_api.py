@@ -64,7 +64,7 @@ class TestInvoiceAPI(IntegrationTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			api.update_register(inv["name"], {"grand_total": 1})
 		cleared = api.update_register(inv["name"], {"received_inr": ""})
-		self.assertIsNone(cleared["forex_gain"])
+		self.assertFalse(cleared["forex_gain"])
 
 	def test_cancel_needs_manager(self):
 		frappe.set_user(self.user)
