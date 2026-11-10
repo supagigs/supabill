@@ -24,6 +24,14 @@ def _manager():
 		frappe.throw(_("Only SupaBill Managers can import wallets"), frappe.PermissionError)
 
 
+def _check_background_jobs():
+	"""Data Import needs the scheduler; say so before anything is uploaded or created."""
+	from frappe.utils.scheduler import is_scheduler_inactive
+	if not (frappe.in_test or frappe.conf.developer_mode) and is_scheduler_inactive():
+		frappe.throw(_("Background jobs are switched off on this site (the scheduler is inactive), so a CSV import cannot run. Ask your administrator to enable the scheduler, then try again."),
+			title=_("Import not available"))
+
+
 def _load(v):
 	return json.loads(v or "null") if isinstance(v, str) else v
 
@@ -49,6 +57,7 @@ def download_template():
 @rate_limit(limit=30, seconds=60)
 def review_csv(file_url: str) -> dict:
 	_manager()
+	_check_background_jobs()
 	f, content = _uploaded_file(file_url)
 	try:
 		rows = wi.review(wi.read_csv(content))
@@ -62,6 +71,7 @@ def review_csv(file_url: str) -> dict:
 def run_csv(rows) -> dict:
 	"""Rows from review with the user's choices: action create / update / skip / rename (+ wallet_name)."""
 	_manager()
+	_check_background_jobs()
 	rows = _load(rows) or []
 	if not rows:
 		frappe.throw(_("Nothing to import"))

@@ -84,7 +84,11 @@ Troubleshooting:
 | Excel table is missing columns: … | A header was renamed — restore the exact name |
 | Row N no longer holds … | Someone sorted/moved rows — press Sync now to re-match |
 
-## 6. Backups, updates and rollback
+## 6. Wallet import
+
+Managers can import wallets from Wallets & banks → **Import wallet** (PDF or CSV; see the user guide). The CSV import uses Frappe's Data Import on the staging DocType **SB Wallet Import**, so it needs the scheduler enabled and a running worker (`bench --site <site> enable-scheduler`); SupaBill says so if they are off. Each run appears under Data Import in the desk with its log. Uploaded CSV/PDF files are deleted as soon as they are read; the CSV that was actually imported stays attached to the Data Import record as a private file.
+
+## 6a. Backups, updates and rollback
 
 - `./scripts/update.sh --bench ~/frappe-bench --site staging.local [--ref vX.Y.Z]` — stops on local changes, backs up, updates, migrates, builds, health-checks, prints the rollback command.
 - Rollback: `git -C apps/supabill checkout <previous>` → `bench --site <site> migrate` → `bench build --app supabill`, or restore the backup.
