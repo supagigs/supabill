@@ -50,7 +50,7 @@ Edits here are written back to Excel; edits your team makes in Excel come back h
 1. Pick the month. The banner shows the due date (30 days after month-end) and how many days are left.
 2. Fix anything listed under **Fill in before filing** (AD code, branch address, signatory, client country or address).
 3. Choose the type of export and category of exporter. In the table, lower the **net realisable value** where a wallet deducts fees, and add a contract number or remarks if needed. The amount, client and SAC come from the invoice.
-4. Download the **PDF** (or CSV) and submit it to the bank.
+4. Download the **PDF** (A4 portrait) or CSV and submit it to the bank.
 5. A manager presses **Mark as filed** and adds the bank or EDPMS reference. The form is then frozen and each invoice is linked to it. **Reopen** puts it back to draft.
 
 A draft follows the register: new or cancelled invoices in that month are added or dropped automatically, and your edits are kept.

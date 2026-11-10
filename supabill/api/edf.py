@@ -261,7 +261,7 @@ def download(month: str, fmt: str = "pdf"):
 	month = _check_month(month)
 	if fmt == "pdf":
 		from frappe.utils.pdf import get_pdf
-		data = get_pdf(render_html(month), {"page-size": "A4", "orientation": "Landscape", "margin-top": "10mm",
+		data = get_pdf(render_html(month), {"page-size": "A4", "orientation": "Portrait", "margin-top": "10mm",
 			"margin-bottom": "10mm", "margin-left": "10mm", "margin-right": "10mm"})
 	elif fmt == "csv":
 		p = _payload(get_or_create(month))
