@@ -283,3 +283,17 @@ app_license = "mit"
 # SupaBill
 after_install = "supabill.supabill.install.after_install"
 after_migrate = "supabill.supabill.install.after_migrate"
+
+website_route_rules = [
+	{"from_route": "/supabill/<path:app_path>", "to_route": "supabill"},
+]
+
+add_to_apps_screen = [
+	{
+		"name": "supabill",
+		"logo": "/assets/supabill/images/supabill-logo.svg",
+		"title": "SupaBill",
+		"route": "/supabill",
+		"has_permission": "supabill.api.session.has_app_permission",
+	}
+]

@@ -1,0 +1,8 @@
+@import 'frappe-ui/style.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body { @apply bg-surface-base text-ink-gray-8; }
+}
