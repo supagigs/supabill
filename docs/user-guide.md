@@ -7,6 +7,8 @@ Open **/supabill** on your Frappe site and sign in. You need the **SupaBill User
 | Create invoices, download PDF/DOCX | ✓ | ✓ |
 | Update payment fields in the register | ✓ | ✓ |
 | Add and edit clients | ✓ | ✓ |
+| Prepare EDFs, update the realisation tracker | ✓ | ✓ |
+| Mark an EDF as filed or reopen it | | ✓ |
 | Cancel invoices, delete clients | | ✓ |
 | Wallets & banks, Settings, codes, CBIC rates, Excel sync | | ✓ |
 
@@ -40,6 +42,22 @@ The register has the same columns as the Excel workbook. Dashed cells are the on
 - The **Excel** column shows whether the row is in the workbook (✓ row 31), waiting (Queued) or failed.
 
 Edits here are written back to Excel; edits your team makes in Excel come back here within a few minutes.
+
+## EDF filing
+
+**EDF filing** prepares one Export Declaration Form per invoice month for all export (LUT) invoices, in the RBI Annex layout. All wallets settle into IDFC FIRST Bank, so there is one form per month.
+
+1. Pick the month. The banner shows the due date (30 days after month-end) and how many days are left.
+2. Fix anything listed under **Fill in before filing** (AD code, branch address, signatory, client country or address).
+3. Choose the type of export and category of exporter. In the table, lower the **net realisable value** where a wallet deducts fees, and add a contract number or remarks if needed. The amount, client and SAC come from the invoice.
+4. Download the **PDF** (or CSV) and submit it to the bank.
+5. A manager presses **Mark as filed** and adds the bank or EDPMS reference. The form is then frozen and each invoice is linked to it. **Reopen** puts it back to draft.
+
+A draft follows the register: new or cancelled invoices in that month are added or dropped automatically, and your edits are kept.
+
+## Realisation tracker
+
+Lists every export invoice until its EDPMS entry is closed, soonest deadline first. **Realise by** is the invoice date plus the realisation period (9 months by default, Settings → AD bank). Add the **IRM number** when IDFC FIRST credits the payment and set **EDPMS** to Closed once the full value is realised; the realised date is filled in. "Paid, not closed" counts invoices marked Received in the register that are still open here.
 
 ## Clients
 

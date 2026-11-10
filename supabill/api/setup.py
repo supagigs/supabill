@@ -20,7 +20,7 @@ SETTINGS_FIELDS = (
 	"invoice_prefix", "next_invoice_number", "number_digits", "default_currency", "default_terms_days",
 	"country_of_supply", "default_cbic_rate", "default_sac", "default_hsn", "default_purpose_code",
 	"lut_arn", "lut_note", "ad_bank_name", "ad_code", "ad_branch_address", "signatory_name",
-	"signatory_designation", "signatory_place", "excel_enabled", "ms_tenant_id", "ms_client_id",
+	"signatory_designation", "signatory_place", "realisation_months", "excel_enabled", "ms_tenant_id", "ms_client_id",
 	"workbook_share_link", "worksheet_name", "table_name", "pull_interval_minutes", "cbic_provider",
 )
 SECRETS = ("ms_client_secret", "allratestoday_api_key")

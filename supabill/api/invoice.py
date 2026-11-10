@@ -25,6 +25,7 @@ LIST_FIELDS = (
 	"wallet_reference", "upwork_invoice", "upwork_account_holder", "received_inr", "bank_charges_usd",
 	"bank_charges_inr", "forex_gain", "net_received", "payment_status", "invoice_status",
 	"excel_sync_status", "excel_row", "docstatus", "tax_treatment", "purpose_code",
+	"realise_by", "irm_number", "edpms_status", "realised_on", "edf",
 )
 
 

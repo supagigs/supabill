@@ -18,6 +18,13 @@ export const NAV: NavGroup[] = [
     ],
   },
   {
+    label: 'Compliance',
+    items: [
+      { name: 'Edf', label: 'EDF filing', icon: 'lucide-file-check' },
+      { name: 'Realisation', label: 'Realisation tracker', icon: 'lucide-clock' },
+    ],
+  },
+  {
     label: 'Setup',
     items: [
       { name: 'Clients', label: 'Clients', icon: 'lucide-users' },

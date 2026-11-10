@@ -5,6 +5,8 @@ const routes: RouteRecordRaw[] = [
   { path: '/', redirect: { name: 'NewInvoice' } },
   { path: '/new', name: 'NewInvoice', component: () => import('./pages/NewInvoice.vue'), meta: { title: 'New invoice' } },
   { path: '/register', name: 'Register', component: () => import('./pages/Register.vue'), meta: { title: 'Sales register' } },
+  { path: '/edf', name: 'Edf', component: () => import('./pages/Edf.vue'), meta: { title: 'EDF filing' } },
+  { path: '/realisation', name: 'Realisation', component: () => import('./pages/Realisation.vue'), meta: { title: 'Realisation tracker' } },
   { path: '/clients', name: 'Clients', component: () => import('./pages/Clients.vue'), meta: { title: 'Clients' } },
   { path: '/wallets', name: 'Wallets', component: () => import('./pages/Wallets.vue'), meta: { title: 'Wallets & banks', managerOnly: true } },
   { path: '/settings', name: 'Settings', component: () => import('./pages/Settings.vue'), meta: { title: 'Settings', managerOnly: true } },

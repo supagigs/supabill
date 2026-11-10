@@ -6,6 +6,7 @@ Invoices, sales register and Excel sync for Supagigs — a standalone Frappe v16
 - **PDF and DOCX** in the exact Supagigs invoice layout (generated from the Word template; PDF via LibreOffice when installed).
 - **Sales register** with the same 22 columns as the Excel workbook; payment fields are edited inline.
 - **Excel sync** with the Microsoft 365 workbook: new invoices are added as table rows, payment columns are read back.
+- **EDF filing** (RBI Annex, one per month) and a **realisation tracker** for EDPMS.
 - **CBIC exchange rates** from AllRatesToday, picked by invoice date (export rate).
 - **Clients, wallets, settings**, SAC/HSN and RBI purpose codes with favourites.
 

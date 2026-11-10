@@ -200,6 +200,13 @@
    "label": "Place"
   },
   {
+   "default": "9",
+   "description": "RBI period for realising export proceeds; used for the realisation tracker and EDF Section 4",
+   "fieldname": "realisation_months",
+   "fieldtype": "Int",
+   "label": "Realisation Period (months)"
+  },
+  {
    "collapsible": 1,
    "fieldname": "excel_section",
    "fieldtype": "Section Break",
@@ -304,7 +311,7 @@
  "issingle": 1,
  "istable": 0,
  "links": [],
- "modified": "2026-11-10 21:00:00.000000",
+ "modified": "2026-11-10 22:00:00.000000",
  "modified_by": "Administrator",
  "module": "SupaBill",
  "name": "SupaBill Settings",

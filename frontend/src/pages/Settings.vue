@@ -135,11 +135,13 @@ onMounted(load)
         <div class="grid gap-2.5"><FormControl label="LUT ARN" v-model="s.lut_arn" /><FormControl type="textarea" label="LUT note" v-model="s.lut_note" /></div>
       </section>
       <section class="sb-card">
-        <h2 class="text-base font-semibold">AD bank &amp; signatory</h2><p class="sb-note mb-3">All wallets settle into this bank. Kept for the EDF module.</p>
+        <h2 class="text-base font-semibold">AD bank &amp; signatory</h2><p class="sb-note mb-3">All wallets settle into this bank. Printed on the EDF (Sections 1 and 4).</p>
         <div class="grid gap-2.5 sm:grid-cols-2">
           <FormControl label="AD bank name" v-model="s.ad_bank_name" /><FormControl label="AD code" v-model="s.ad_code" />
           <FormControl class="sm:col-span-2" label="Branch address" v-model="s.ad_branch_address" />
           <FormControl label="Authorised signatory" v-model="s.signatory_name" /><FormControl label="Designation" v-model="s.signatory_designation" />
+          <FormControl label="Place" v-model="s.signatory_place" />
+          <FormControl type="number" label="Realisation period (months)" v-model="s.realisation_months" description="RBI period for realising export proceeds" />
         </div>
       </section>
 

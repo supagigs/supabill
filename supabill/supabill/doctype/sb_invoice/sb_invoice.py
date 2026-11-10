@@ -1,13 +1,14 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import add_days, cint, flt, today
+from frappe.utils import add_days, add_months, cint, flt, today
 
 from supabill.supabill import calc
 
 REGISTER_FIELDS = (
 	"register_description", "wallet_reference", "upwork_invoice", "upwork_account_holder",
 	"invoice_status", "received_inr", "bank_charges_usd", "bank_charges_inr", "payment_status",
+	"irm_number", "edpms_status", "realised_on",
 )
 
 
@@ -19,6 +20,7 @@ class SBInvoice(Document):
 		self.fill_from_client()
 		self.due_date = add_days(self.invoice_date, cint(self.payment_terms_days))
 		self.gst_return_period = calc.gst_return_period(self.invoice_date)
+		self.realise_by = add_months(self.invoice_date, realisation_months())
 		for it in self.items:
 			it.currency = self.currency
 		self.update(calc.compute_lines(self.items, self.tax_treatment))
@@ -156,3 +158,7 @@ def next_invoice_name() -> str:
 		number += 1
 	frappe.db.set_single_value("SupaBill Settings", "next_invoice_number", number + 1)
 	return name
+
+
+def realisation_months() -> int:
+	return cint(frappe.db.get_single_value("SupaBill Settings", "realisation_months")) or 9

@@ -6,7 +6,7 @@
 set -u
 OUT="${1:-./shots}"; mkdir -p "$OUT"; cd "$(dirname "$0")"
 fail=0
-for t in smoke invoice setup register; do
+for t in smoke invoice setup register edf; do
   echo "== $t"; node "$t.cjs" "$OUT" || fail=1
 done
 exit $fail

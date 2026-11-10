@@ -1,0 +1,149 @@
+{
+ "actions": [],
+ "autoname": "format:EDF-{month}",
+ "creation": "2026-11-10 22:00:00.000000",
+ "custom": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "fields": [
+  {
+   "fieldname": "month",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Invoice Month (YYYY-MM)",
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Draft\nFiled"
+  },
+  {
+   "default": "Service \u2014 software",
+   "fieldname": "export_type",
+   "fieldtype": "Select",
+   "label": "Type of Export",
+   "options": "Service \u2014 software\nService \u2014 non-software"
+  },
+  {
+   "default": "Others",
+   "fieldname": "exporter_category",
+   "fieldtype": "Select",
+   "label": "Category of Exporter",
+   "options": "Others\nCustom (DTA units)\nSEZ\n100% EOU\nWarehouse export"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "form_no",
+   "fieldtype": "Data",
+   "label": "Form No. (from bank)"
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Due Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "realise_by",
+   "fieldtype": "Date",
+   "label": "Realise By",
+   "read_only": 1
+  },
+  {
+   "fieldname": "filed_on",
+   "fieldtype": "Date",
+   "label": "Filed On"
+  },
+  {
+   "fieldname": "bank_reference",
+   "fieldtype": "Data",
+   "label": "Bank / EDPMS Reference"
+  },
+  {
+   "fieldname": "lines_section",
+   "fieldtype": "Section Break",
+   "label": "2B. Services"
+  },
+  {
+   "fieldname": "lines",
+   "fieldtype": "Table",
+   "label": "Invoices",
+   "options": "SB EDF Line"
+  },
+  {
+   "fieldname": "invoice_count",
+   "fieldtype": "Int",
+   "label": "Invoices",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_inr",
+   "fieldtype": "Currency",
+   "label": "Total (INR at CBIC)",
+   "options": "INR",
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-11-10 22:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SupaBill",
+ "name": "SB EDF",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill User",
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "month",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "month",
+ "track_changes": 1
+}
