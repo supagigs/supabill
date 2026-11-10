@@ -134,6 +134,13 @@ def download(name: str, fmt: str = "pdf"):
 	doc.check_permission("read")
 	if fmt not in ("pdf", "docx"):
 		frappe.throw(_("Format must be pdf or docx"))
+	if doc.imported and doc.original_file and doc.original_file.lower().endswith("." + fmt):
+		# an imported invoice downloads as the file it was imported from
+		f = frappe.get_doc("File", {"file_url": doc.original_file})
+		frappe.local.response.filename = f.file_name
+		frappe.local.response.filecontent = f.get_content()
+		frappe.local.response.type = "download"
+		return
 	data = render_pdf(doc) if fmt == "pdf" else render_docx(doc)
 	frappe.local.response.filename = file_name(doc, fmt)
 	frappe.local.response.filecontent = data

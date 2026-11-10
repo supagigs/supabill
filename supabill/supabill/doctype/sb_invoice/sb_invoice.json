@@ -420,6 +420,20 @@
    "search_index": 1
   },
   {
+   "description": "Created from an earlier invoice (PDF, Word or CSV); keeps its original number and bank details",
+   "fieldname": "imported",
+   "fieldtype": "Check",
+   "in_standard_filter": 1,
+   "label": "Imported",
+   "read_only": 1
+  },
+  {
+   "fieldname": "original_file",
+   "fieldtype": "Attach",
+   "label": "Original File",
+   "read_only": 1
+  },
+  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -433,7 +447,7 @@
  "issingle": 0,
  "istable": 0,
  "links": [],
- "modified": "2026-11-10 22:00:00.000000",
+ "modified": "2026-11-10 23:30:00.000000",
  "modified_by": "Administrator",
  "module": "SupaBill",
  "name": "SB Invoice",

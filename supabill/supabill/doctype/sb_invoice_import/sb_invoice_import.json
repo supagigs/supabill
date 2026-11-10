@@ -1,0 +1,250 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "hash",
+ "creation": "2026-11-10 23:30:00.000000",
+ "custom": 0,
+ "description": "Staging rows for importing past invoices with Data Import. Each row creates an invoice, updates register columns, or is skipped.",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "fields": [
+  {
+   "fieldname": "invoice_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Invoice Number",
+   "reqd": 1
+  },
+  {
+   "default": "Skip",
+   "description": "Update changes only the register columns of the existing invoice; blank cells keep current values",
+   "fieldname": "if_exists",
+   "fieldtype": "Select",
+   "label": "If Invoice Exists",
+   "options": "Skip\nUpdate"
+  },
+  {
+   "fieldname": "invoice_date",
+   "fieldtype": "Date",
+   "label": "Invoice Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "due_date",
+   "fieldtype": "Date",
+   "label": "Due Date"
+  },
+  {
+   "fieldname": "client",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Client",
+   "reqd": 1
+  },
+  {
+   "fieldname": "create_client",
+   "fieldtype": "Check",
+   "label": "Create Client If Missing"
+  },
+  {
+   "fieldname": "client_address",
+   "fieldtype": "Small Text",
+   "label": "Client Address"
+  },
+  {
+   "fieldname": "client_country",
+   "fieldtype": "Data",
+   "label": "Client Country"
+  },
+  {
+   "fieldname": "client_email",
+   "fieldtype": "Data",
+   "label": "Client Email"
+  },
+  {
+   "fieldname": "attention",
+   "fieldtype": "Data",
+   "label": "Attention"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Data",
+   "label": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Float",
+   "label": "Amount Before Tax",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "description": "Export under LUT, IGST 18% or CGST + SGST 9+9",
+   "fieldname": "tax_treatment",
+   "fieldtype": "Data",
+   "label": "Tax Treatment"
+  },
+  {
+   "description": "Optional check against the calculated total",
+   "fieldname": "total",
+   "fieldtype": "Float",
+   "label": "Total As Printed",
+   "precision": "2"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "sac_code",
+   "fieldtype": "Data",
+   "label": "SAC Code"
+  },
+  {
+   "fieldname": "hsn_code",
+   "fieldtype": "Data",
+   "label": "HSN Code"
+  },
+  {
+   "fieldname": "purpose_code",
+   "fieldtype": "Data",
+   "label": "Purpose Code"
+  },
+  {
+   "fieldname": "wallet",
+   "fieldtype": "Data",
+   "label": "Wallet",
+   "reqd": 1
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Data",
+   "label": "Project"
+  },
+  {
+   "fieldname": "milestone",
+   "fieldtype": "Data",
+   "label": "Milestone"
+  },
+  {
+   "fieldname": "billing_period",
+   "fieldtype": "Data",
+   "label": "Billing Period"
+  },
+  {
+   "fieldname": "cbic_rate",
+   "fieldtype": "Float",
+   "label": "CBIC Rate",
+   "precision": "4"
+  },
+  {
+   "fieldname": "wallet_reference",
+   "fieldtype": "Data",
+   "label": "Wallet Reference"
+  },
+  {
+   "fieldname": "upwork_invoice",
+   "fieldtype": "Data",
+   "label": "Upwork Invoice"
+  },
+  {
+   "fieldname": "upwork_account_holder",
+   "fieldtype": "Data",
+   "label": "Upwork Account Holder"
+  },
+  {
+   "fieldname": "received_inr",
+   "fieldtype": "Data",
+   "label": "Received (INR)"
+  },
+  {
+   "fieldname": "bank_charges_usd",
+   "fieldtype": "Data",
+   "label": "Bank Charges ($)"
+  },
+  {
+   "fieldname": "bank_charges_inr",
+   "fieldtype": "Data",
+   "label": "Bank Charges (Rs)"
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Data",
+   "label": "Payment Status"
+  },
+  {
+   "fieldname": "invoice_status",
+   "fieldtype": "Data",
+   "label": "Invoice Status"
+  },
+  {
+   "fieldname": "irm_number",
+   "fieldtype": "Data",
+   "label": "IRM Number"
+  },
+  {
+   "fieldname": "edpms_status",
+   "fieldtype": "Data",
+   "label": "EDPMS Status"
+  },
+  {
+   "fieldname": "bank_details",
+   "fieldtype": "Small Text",
+   "label": "Bank Details As Printed"
+  },
+  {
+   "fieldname": "source_file",
+   "fieldtype": "Data",
+   "label": "Source File",
+   "read_only": 1
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Result",
+   "read_only": 1
+  },
+  {
+   "fieldname": "invoice",
+   "fieldtype": "Data",
+   "label": "Invoice",
+   "read_only": 1
+  }
+ ],
+ "in_create": 1,
+ "is_submittable": 0,
+ "issingle": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-11-10 23:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "SupaBill",
+ "name": "SB Invoice Import",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "import": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager"
+  },
+  {
+   "create": 1,
+   "import": 1,
+   "read": 1,
+   "report": 1,
+   "role": "SupaBill Manager"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

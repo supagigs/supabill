@@ -88,6 +88,10 @@ Troubleshooting:
 
 Managers can import wallets from Wallets & banks → **Import wallet** (PDF or CSV; see the user guide). The CSV import uses Frappe's Data Import on the staging DocType **SB Wallet Import**, so it needs the scheduler enabled and a running worker (`bench --site <site> enable-scheduler`); SupaBill says so if they are off. Each run appears under Data Import in the desk with its log. Uploaded CSV/PDF files are deleted as soon as they are read; the CSV that was actually imported stays attached to the Data Import record as a private file.
 
+## 6b. Invoice import
+
+Managers can import earlier invoices from the Sales register → **Import invoices** (PDF/Word or CSV). Like the wallet import it uses Frappe's Data Import (staging DocType **SB Invoice Import**) and needs the scheduler and a worker. Imported invoices: own number, `imported = 1`, original file attached as a private file, bank details as printed on the original, pushed to Excel when sync is on. Uploaded files that are not imported are deleted.
+
 ## 6a. Backups, updates and rollback
 
 - `./scripts/update.sh --bench ~/frappe-bench --site staging.local [--ref vX.Y.Z]` — stops on local changes, backs up, updates, migrates, builds, health-checks, prints the rollback command.

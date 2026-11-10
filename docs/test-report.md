@@ -1,5 +1,14 @@
 # SupaBill test report
 
+## 1.3.0rc1 — Invoice import (10 Nov 2026)
+
+| Check | Result |
+|---|---|
+| Backend tests incl. 12 new (`test_invoice_import.py`): template, values (amounts, day-first dates), create through Data Import with the counter untouched, update / skip / renumber, unresolved clash refused, new client, review errors, SupaBill PDF and DOCX round trip, another layout by keywords, original file kept and downloaded, unreadable file, manager-only | **76 / 76 pass** |
+| Browser tests incl. 18 new (`tests/ui/invoice_import.cjs`) | **108 / 108 pass** on the development bench |
+
+Found and fixed while testing: Data Import commits its rows, so the backend tests now remove what they import; the EDF browser test re-selects its month after a reload.
+
 ## 1.2.0rc1 — Wallet import (10 Nov 2026)
 
 | Check | Result |

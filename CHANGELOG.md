@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0rc1 — 10 Nov 2026
+- **Import invoices** (managers) on the Sales register, same approach and rules as Import wallet:
+  - **From PDF / Word files** — several files at once, one invoice per file. Values are found by the words printed next to them (Invoice No, Invoice Date, Due Date, Bill To, Total Due, Sub Total, Currency, Purpose Code, SAC, LUT/IGST/CGST, bank details). No OCR or AI; scanned files are reported as not read.
+  - **From CSV** — template with one row per invoice.
+  - Review per row: number (editable), Create / Skip / Update register fields / import with a new number, client (existing or create new), wallet (matched by the printed account number).
+  - Runs through Frappe Data Import (staging DocType SB Invoice Import). Imported invoices keep their number (the next-number counter is unchanged), are submitted and locked, are marked *Imported*, keep the original file (downloads return it), and are pushed to Excel when sync is on.
+
 ## 1.2.0rc1 — 10 Nov 2026
 - **Import wallet** (managers) on Wallets & banks:
   - **From invoice PDF** — reads the bank lines from a text PDF into the wallet form (one wallet per PDF); nothing is saved until Save.

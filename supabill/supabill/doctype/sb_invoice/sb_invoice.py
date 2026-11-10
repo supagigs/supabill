@@ -14,7 +14,8 @@ REGISTER_FIELDS = (
 
 class SBInvoice(Document):
 	def autoname(self):
-		self.name = next_invoice_name()
+		# Imported invoices keep the number printed on them; the counter is not touched.
+		self.name = self.flags.import_name or next_invoice_name()
 
 	def validate(self):
 		self.fill_from_client()
@@ -49,14 +50,18 @@ class SBInvoice(Document):
 
 	def on_submit(self):
 		first = self.items[0] if self.items else None
-		frappe.db.set_value("SB Client", self.client, {
-			"last_milestone": self.milestone,
-			"last_billing_period": self.billing_period,
-			"last_amount": first.rate if first else 0,
-		}, update_modified=False)
+		newer = self.imported and frappe.db.exists("SB Invoice", {
+			"client": self.client, "docstatus": 1, "name": ("!=", self.name), "invoice_date": (">", self.invoice_date)})
+		if not newer:
+			frappe.db.set_value("SB Client", self.client, {
+				"last_milestone": self.milestone,
+				"last_billing_period": self.billing_period,
+				"last_amount": first.rate if first else 0,
+			}, update_modified=False)
 		excel_on = frappe.db.get_single_value("SupaBill Settings", "excel_enabled")
 		self.db_set("excel_sync_status", "Queued" if excel_on else "Not synced")
-		frappe.enqueue("supabill.api.output.attach_files", name=self.name, queue="short", enqueue_after_commit=True)
+		if not self.imported:  # imported invoices keep their original file instead
+			frappe.enqueue("supabill.api.output.attach_files", name=self.name, queue="short", enqueue_after_commit=True)
 		if excel_on:
 			frappe.enqueue("supabill.supabill.excel.push_invoice", name=self.name, queue="short",
 				enqueue_after_commit=True, job_id=f"sb-excel-push-{self.name}", deduplicate=True)
@@ -88,6 +93,8 @@ class SBInvoice(Document):
 			self.cbic_rate, self.cbic_rate_effective_from, self.cbic_rate_source = rate, effective, "Auto"
 
 	def snapshot_bank_details(self):
+		if self.imported and (self.bank_details or "").strip():
+			return  # keep the bank lines printed on the original invoice
 		if self.docstatus or not self.wallet:
 			return
 		w = frappe.get_cached_doc("SB Wallet", self.wallet)
@@ -101,6 +108,8 @@ class SBInvoice(Document):
 
 	def check_ready(self):
 		blocking = [m for level, m in readiness(self) if level == "error"]
+		if self.imported:  # the original already printed its own bank details
+			blocking = [m for m in blocking if not m.startswith(_("Bank details for wallet {0}").format(""))]
 		if blocking:
 			frappe.throw(_("Fix before saving: {0}").format(", ".join(blocking)), title=_("Invoice not ready"))
 

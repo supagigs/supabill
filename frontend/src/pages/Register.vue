@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { Button, FormControl, LoadingIndicator, toast, dialog } from 'frappe-ui'
+import { Button, Dropdown, FormControl, LoadingIndicator, toast, dialog } from 'frappe-ui'
+import InvoiceImport from '@/components/InvoiceImport.vue'
 import PageFrame from '@/components/PageFrame.vue'
 import { call } from '@/api'
 import { fmtDate, inr, inrDec, monthLabel } from '@/format'
@@ -19,6 +20,12 @@ const NUM = new Set(['received_inr', 'bank_charges_usd', 'bank_charges_inr'])
 const PAY = ['Pending', 'Partially received', 'Received']
 const INV = ['Raised', 'Sent']
 
+const importMode = ref<'files' | 'csv'>('files')
+const importOpen = ref(false)
+const importOptions = [
+  { label: 'From PDF / Word files', icon: 'lucide-file-text', onClick: () => { importMode.value = 'files'; importOpen.value = true } },
+  { label: 'From CSV', icon: 'lucide-sheet', onClick: () => { importMode.value = 'csv'; importOpen.value = true } },
+]
 async function load() {
   loading.value = true
   try {
@@ -124,6 +131,7 @@ onMounted(async () => {
     <template #actions>
       <Button label="Export .csv" icon-left="lucide-download" @click="exportCsv" />
       <Button v-if="session.isManager" label="Sync with Excel" icon-left="lucide-refresh-cw" @click="syncNow" />
+      <Dropdown v-if="session.isManager" :options="importOptions" align="end" :button="{ label: 'Import invoices', iconLeft: 'lucide-upload' }" />
       <Button variant="solid" label="New invoice" icon-left="lucide-plus" :route="{ name: 'NewInvoice' }" />
     </template>
 
@@ -210,6 +218,7 @@ onMounted(async () => {
       </div>
       <p class="sb-note mt-2">Dashed cells are the ones your team fills in later — edit here or in Excel; both stay in sync. Received is the INR credited in IDFC FIRST Bank. Net received = Received − Bank charges (₹). Entering Received sets the payment status.</p>
     </template>
+    <InvoiceImport v-model:open="importOpen" :mode="importMode" @done="load" />
   </PageFrame>
 </template>
 

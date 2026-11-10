@@ -59,6 +59,17 @@ A draft follows the register: new or cancelled invoices in that month are added 
 
 Lists every export invoice until its EDPMS entry is closed, soonest deadline first. **Realise by** is the invoice date plus the realisation period (9 months by default, Settings → AD bank). Add the **IRM number** when IDFC FIRST credits the payment and set **EDPMS** to Closed once the full value is realised; the realised date is filled in. "Paid, not closed" counts invoices marked Received in the register that are still open here.
 
+### Import invoices (managers)
+
+**Import invoices** (top right of the register) adds earlier invoices to the register.
+
+- **From PDF / Word files** — choose one or more invoice PDFs or .docx files, one invoice per file. SupaBill looks for the words printed next to each value — *Invoice No*, *Invoice Date*, *Due Date*, *Bill To*, *Sub Total*, *Total Due*, *Currency*, *Purpose Code*, the SAC code, *LUT* / *IGST* / *CGST*, and the bank details — and reads the value beside or below them. No OCR or AI is used, so scanned (image) files are listed as *not read*. Numeric dates are read day first (15/04/2026).
+- **From CSV** — download the template and fill one row per invoice. Required: Invoice Number, Invoice Date, Client, Currency, Amount Before Tax, Wallet.
+
+In the review, every row shows what was found. For each row you can change the **invoice number**, choose **Create**, **Skip**, **Update register fields** (for a number that already exists — only wallet ref, received, charges and statuses change; blank cells keep current values) or **Import with a new number**, pick the **client** (an existing one, or *Create new* from the details on the invoice) and the **wallet** (matched automatically by the account number printed on the invoice). The import stays blocked until every row is resolved.
+
+Imported invoices keep their own number (your next invoice number is unchanged), are locked like generated ones, are marked *Imported*, keep the original file (Download PDF/DOCX returns it), and are added to the Excel workbook when Excel sync is on. The import runs through Frappe's Data Import.
+
 ## Clients
 
 Each client stores the bill-to details and the defaults for its invoices (project, currency, terms, wallet, tax treatment, purpose code, SAC/HSN). **New invoice →** starts an invoice for that client. Clients with invoices can be disabled but not deleted.
